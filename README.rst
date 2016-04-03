@@ -53,7 +53,7 @@ To install pip on your distribution of choice, `consolidate the pip
 documentation <http://python-packaging-user-guide.readthedocs
 .org/en/latest/install_requirements_linux/>`_
 
-.. note:: You need to install the Python3 version of pip
+**Note**: You need to install the Python3 version of pip
 
 After installing pip, run::
 
@@ -111,7 +111,7 @@ There are two ways to run the updater:
 
     owncloud-news-updater https://domain.com/path/to/owncloud --user admin_user --password admin_password
 
-.. note:: **admin_user** is a user id with admin rights, **admin_password** the user's password
+**Note**: **admin_user** is a user id with admin rights, **admin_password** the user's password
 
 You can view all options by running::
 
