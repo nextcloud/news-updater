@@ -171,7 +171,14 @@ The service file will assume that your configuration is located in **/etc/ownclo
 Self signed certificates
 ------------------------
 
-Should you use a self signed certificate over SSL, first consider getting a free valid cert signed by `StartSSL <http://startssl.com>`_. If you don't want to get a valid certificate, you need to add it to the installed certs::
+Should you use a self signed certificate over SSL, first consider getting a
+free valid cert signed from
+
+* `Lets Encrypt <https://letsencrypt.org/>`_
+* `StartSSL <http://startssl.com>`_
+* `WoSign <https://www.wosign.com/english/>`_
+
+If you don't want to get a valid certificate, you need to add it to the installed certs::
 
     cat /path/to/your/cert/cacert.pem >> /usr/local/lib/python3.X/dist-packages/requests/cacert.pem
 
