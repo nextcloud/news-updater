@@ -168,13 +168,13 @@ You can also put your settings in a config file, looking like this:
 .. code:: ini
 
     [updater]
-    user = admin
-    password = admin
+    user = admin  # only needed when using the REST API
+    password = admin  # only needed when using the REST API
     threads = 10
     interval = 900
     loglevel = error
     testrun = false
-    url = https://domain.com/owncloud # or /path/to/owncloud
+    url = /path/to/owncloud  # or https://domain.com/owncloud when using the REST API
 
 Then run the updater with::
 
@@ -224,6 +224,8 @@ varies from distribution to distribution, e.g in Debian and Ubuntu you would use
     [Install]
     WantedBy=default.target
 
+If you are using the REST API, most of the time you can get away by using **nobody** as
+user, but again, that might vary depending on your distribution.
 
 Self Signed Certificates
 ------------------------
