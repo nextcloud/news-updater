@@ -75,7 +75,7 @@ To uninstall the updater run::
 No installation
 ~~~~~~~~~~~~~~~
 If you do not want to install the script at all you can call it directly. This
-however requires you to have the requests module to be installed. To do that
+however requires the requests module to be installed. To do that
 either get the package from your distro or use pip to install it. On Ubuntu this would be::
 
     sudo apt-get install python3-requests
