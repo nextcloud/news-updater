@@ -33,4 +33,3 @@ test:
 	# keep it simple until we've got tests
 	pep8 owncloud_news_updater
 	python3 -m owncloud_news_updater --version
-
