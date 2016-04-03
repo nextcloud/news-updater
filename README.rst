@@ -14,7 +14,7 @@ process may time out.
 
 Therefore the News app provides an API that offers a more fine grained
 control over updating feeds. This Python project implements an update
-mechanism that is based on the `updater REST API <https://github.com/owncloud/news/wiki/Updater-1.2>`_ or (new in 8.1.0) the
+mechanism that is based on the `updater REST API <https://github.com/owncloud/news/wiki/Updater-1.2>`_ or (new in ownCloud News 8.1.0) the
 console based update API.
 
 Dependencies
