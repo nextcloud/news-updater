@@ -15,3 +15,6 @@ update: clean
 
 uninstall: clean
 	sudo pip3 uninstall owncloud_news_updater
+
+pypi: clean
+	python3 setup.py sdist upload
