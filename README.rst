@@ -30,7 +30,7 @@ Installation
 ------------
 There are two different ways to install the updater:
 
-* Installation using pip
+* Installation using pip (recommended)
 * Manual installation
 * No installation
 
@@ -47,11 +47,15 @@ documentation <http://python-packaging-user-guide.readthedocs
 
 After installing pip, run::
 
-    pip3 install owncloud-news-updater
+    sudo pip3 install owncloud-news-updater --install-option="--install-scripts=/usr/bin"
 
 To update the library, run::
 
-    pip3 install --upgrade owncloud-news-updater
+    sudo pip3 install --upgrade owncloud-news-updater --install-option="--install-scripts=/usr/bin"
+
+To uninstall the library run::
+
+    sudo pip3 uninstall owncloud-news-updater
 
 Manual installation
 ~~~~~~~~~~~~~~~~~~~
@@ -62,7 +66,11 @@ This requires setuptools to be installed. On Ubuntu this can be done by running:
 
 Then install the package like this::
 
-    python3 setup.py install
+    python3 setup.py install --install-scripts=/usr/bin
+
+To uninstall the updater run::
+
+    python3 setup.py uninstall
 
 No installation
 ~~~~~~~~~~~~~~~

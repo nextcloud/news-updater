@@ -1,8 +1,5 @@
-all: install
-
-
-install: install-systemd
-
+install:
+    sudo python3 setup.py install
 
 clean:
 	rm -rf dist
