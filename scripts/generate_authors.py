@@ -40,7 +40,7 @@ def main():
     authors = filter(lambda name: name.strip() != '', authors)
     authors = map(parse_git_author, authors)
     authors = map(to_markdown, authors)
-    authors = ['# Authors'] + list(authors)
+    authors = ['# Authors', ''] + list(authors)
     markdown = '\n'.join(authors)
     with open(get_authors_file(), 'w') as f:
         f.write(markdown)
