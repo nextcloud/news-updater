@@ -26,7 +26,7 @@ def parse_git_author(line):
 
 
 def to_markdown(author):
-    return '* `%s <mailto:%s`_' % (author['name'], author['email'])
+    return '* `%s <mailto:%s>`_' % (author['name'], author['email'])
 
 
 def get_authors_file():
@@ -40,7 +40,7 @@ def main():
     authors = filter(lambda name: name.strip() != '', authors)
     authors = map(parse_git_author, authors)
     authors = map(to_markdown, authors)
-    authors = ['# Authors', ''] + list(authors)
+    authors = ['Authors', '=======', ''] + list(authors)
     markdown = '\n'.join(authors)
     with open(get_authors_file(), 'w') as f:
         f.write(markdown)
