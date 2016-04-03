@@ -44,7 +44,7 @@ There are two different ways to install the updater:
 * Manual installation
 * No installation
 
-Installation using pip
+Installation Using Pip
 ~~~~~~~~~~~~~~~~~~~~~~
 Since 8.2 the package is available on pypi for installation via pip (the
 Python library package manager).
@@ -67,7 +67,7 @@ To uninstall the library run::
 
     sudo pip3 uninstall owncloud_news_updater
 
-Manual installation
+Manual Installation
 ~~~~~~~~~~~~~~~~~~~
 If you don't want to install the updater via pip, you can install it manually.
 This requires setuptools to be installed. On Ubuntu this can be done by running::
@@ -82,7 +82,7 @@ To uninstall the updater run::
 
     python3 setup.py uninstall
 
-No installation
+No Installation
 ~~~~~~~~~~~~~~~
 If you do not want to install the script at all you can call it directly. This
 however requires the requests module to be installed. To do that
@@ -181,19 +181,51 @@ Then run the updater with::
     owncloud-news-updater -c /path/to/config
 
 
-Running the updater as systemd service
+Running The Updater As Systemd Service
 --------------------------------------
 Since almost always you want to run and stop the updater using your in init system,
-the updater contains a simple example SystemD service file in
-**systemd/owncloud-news-updater.service**. To install it, copy the file into the
-**/etc/systemd/system/** folder and run::
+you can create a very simple unit file. To do that, simply create a text file
+in **/etc/systemd/system/owncloud-news-updater.service** with the following contents
+
+.. code:: ini
+
+    [Unit]
+    After=default.target
+
+    [Service]
+    Type=simple
+    User=http
+    ExecStart=/usr/bin/owncloud-news-updater -c /etc/owncloud/news/updater.ini
+
+    [Install]
+    WantedBy=default.target
+
+Then to enable and start it run::
 
     systemctl enable owncloud-news-updater.service
     systemctl start owncloud-news-updater.service
 
-The service file will assume that your configuration is located in **/etc/owncloud/news/updater.ini**
+**Note**: If you are using the cli based updater (as in set an absolute directory as url)
+you need to set the webserver user as user in the unit file since ownCloud requires
+every call to it's cli to be executed as the user that owns it. This user
+varies from distribution to distribution. In Debian and Ubuntu you would use the
+**www-data** user:
 
-Self signed certificates
+.. code:: ini
+
+    [Unit]
+    After=default.target
+
+    [Service]
+    Type=simple
+    User=www-data
+    ExecStart=/usr/bin/owncloud-news-updater -c /etc/owncloud/news/updater.ini
+
+    [Install]
+    WantedBy=default.target
+
+
+Self Signed Certificates
 ------------------------
 
 Should you use a self signed certificate over SSL, first consider getting a
