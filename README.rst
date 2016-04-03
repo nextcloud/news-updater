@@ -171,10 +171,10 @@ You can also put your settings in a config file, looking like this:
     user = admin
     password = admin
     threads = 10
-    interval = 300
+    interval = 900
     loglevel = error
     testrun = false
-    url = https://domain.com/owncloud
+    url = https://domain.com/owncloud # or /path/to/owncloud
 
 Then run the updater with::
 
