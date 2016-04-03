@@ -117,48 +117,49 @@ You can view all options by running::
 
     owncloud-news-updater --help
 
-usage: __main__.py [-h] [--testrun] [--threads THREADS] [--timeout TIMEOUT]
-                   [--interval INTERVAL] [--loglevel {info,error}]
-                   [--config CONFIG] [--user USER] [--password PASSWORD]
-                   [url]
+::
 
-positional arguments:
-  url                   The URL or absolute path to the directory where
-                        owncloud is installed. Must be specified on the
-                        command line or in the config file. If the URL starts
-                        with http:// or https://, a user and password are
-                        required. Otherwise updater tries to use the console
-                        based API which was added in 8.1.0
+    usage: __main__.py [-h] [--testrun] [--threads THREADS] [--timeout TIMEOUT]
+                       [--interval INTERVAL] [--loglevel {info,error}]
+                       [--config CONFIG] [--user USER] [--password PASSWORD]
+                       [url]
 
-optional arguments:
-  -h, --help            show this help message and exit
-  --testrun             Run update only once, DO NOT use this in a cron job,
-                        only recommended for testing
-  --threads THREADS, -t THREADS
-                        How many feeds should be fetched in parallel, defaults
-                        to 10
-  --timeout TIMEOUT, -s TIMEOUT
-                        Maximum number of seconds for updating a feed,
-                        defaults to 5 minutes
-  --interval INTERVAL, -i INTERVAL
-                        Update interval between fetching the next round of
-                        updates in seconds, defaults to 15 minutes. The update
-                        timespan will be subtracted from the interval.
-  --loglevel {info,error}, -l {info,error}
-                        Log granularity, info will log all urls and received
-                        data, error will only log errors
-  --config CONFIG, -c CONFIG
-                        Path to config file where all parameters except can be
-                        defined as key values pair. An example is in
-                        bin/example_config.ini
-  --user USER, -u USER  Admin username to log into ownCloud. Must be specified
-                        on the command line or in the config file if the
-                        updater should update over HTTP
-  --password PASSWORD, -p PASSWORD
-                        Admin password to log into ownCloud if the updater
-                        should update over HTTP
-  --version, -v         Prints the updater's version
+    positional arguments:
+      url                   The URL or absolute path to the directory where
+                            owncloud is installed. Must be specified on the
+                            command line or in the config file. If the URL starts
+                            with http:// or https://, a user and password are
+                            required. Otherwise updater tries to use the console
+                            based API which was added in 8.1.0
 
+    optional arguments:
+      -h, --help            show this help message and exit
+      --testrun             Run update only once, DO NOT use this in a cron job,
+                            only recommended for testing
+      --threads THREADS, -t THREADS
+                            How many feeds should be fetched in parallel, defaults
+                            to 10
+      --timeout TIMEOUT, -s TIMEOUT
+                            Maximum number of seconds for updating a feed,
+                            defaults to 5 minutes
+      --interval INTERVAL, -i INTERVAL
+                            Update interval between fetching the next round of
+                            updates in seconds, defaults to 15 minutes. The update
+                            timespan will be subtracted from the interval.
+      --loglevel {info,error}, -l {info,error}
+                            Log granularity, info will log all urls and received
+                            data, error will only log errors
+      --config CONFIG, -c CONFIG
+                            Path to config file where all parameters except can be
+                            defined as key values pair. An example is in
+                            bin/example_config.ini
+      --user USER, -u USER  Admin username to log into ownCloud. Must be specified
+                            on the command line or in the config file if the
+                            updater should update over HTTP
+      --password PASSWORD, -p PASSWORD
+                            Admin password to log into ownCloud if the updater
+                            should update over HTTP
+      --version, -v         Prints the updater's version
 
 
 
