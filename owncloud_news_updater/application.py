@@ -8,7 +8,9 @@ import os
 import sys
 import argparse
 import configparser
+from os.path import dirname, realpath, join
 from owncloud_news_updater.updater import WebUpdater, ConsoleUpdater
+from owncloud_news_updater.version import get_version
 
 __author__ = 'Bernhard Posselt'
 __copyright__ = 'Copyright 2012-2016, Bernhard Posselt'
@@ -56,6 +58,9 @@ def main():
     parser.add_argument('--password', '-p',
                         help='Admin password to log into ownCloud if the '
                              'updater should update over HTTP')
+    parser.add_argument('--version', '-v', action='version',
+                        version=get_version(),
+                        help='Prints the updater\'s version')
     parser.add_argument('url',
                         help='The URL or absolute path to the directory '
                              'where owncloud is installed. Must be specified '

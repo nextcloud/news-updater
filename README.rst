@@ -147,6 +147,8 @@ optional arguments:
   --password PASSWORD, -p PASSWORD
                         Admin password to log into ownCloud if the updater
                         should update over HTTP
+  --version VERSION, -v VERSION
+                        Prints the updater's version
 
 
 
