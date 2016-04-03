@@ -183,9 +183,9 @@ Then run the updater with::
 
 Running The Updater As Systemd Service
 --------------------------------------
-Since almost always you want to run and stop the updater using your in init system,
-you can create a very simple unit file. To do that, simply create a text file
-in **/etc/systemd/system/owncloud-news-updater.service** with the following contents
+Almost always you want to run and stop the updater using your in init system.
+As for Systemd, you can create a simple text file in
+**/etc/systemd/system/owncloud-news-updater.service** with the following contents:
 
 .. code:: ini
 
