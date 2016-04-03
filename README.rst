@@ -53,7 +53,7 @@ To install pip on your distribution of choice, `consolidate the pip
 documentation <http://python-packaging-user-guide.readthedocs
 .org/en/latest/install_requirements_linux/>`_
 
-**Note**: You need to install the Python3 version of pip
+**Note**: You need to install the Python 3 version of pip
 
 After installing pip, run::
 
@@ -181,7 +181,7 @@ Then run the updater with::
     owncloud-news-updater -c /path/to/config
 
 
-Running the updater as SystemD service
+Running the updater as systemd service
 --------------------------------------
 Since almost always you want to run and stop the updater using your in init system,
 the updater contains a simple example SystemD service file in
