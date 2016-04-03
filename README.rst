@@ -166,6 +166,7 @@ the updater contains a simple example SystemD service file in
     systemctl enable owncloud-news-updater.service
     systemctl start owncloud-news-updater.service
 
+The service file will assume that your configuration is located in **/etc/owncloud/news/updater.ini**
 
 Self signed certificates
 ------------------------
