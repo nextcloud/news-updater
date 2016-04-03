@@ -29,6 +29,7 @@ to::
 Installation
 ------------
 There are two different ways to install the updater:
+
 * Installation using pip
 * Manual installation
 * No installation
@@ -42,7 +43,7 @@ To install pip on your distribution of choice, `consolidate the pip
 documentation <http://python-packaging-user-guide.readthedocs
 .org/en/latest/install_requirements_linux/>`_
 
-..note :: You need to install the Python3 version of pip
+.. note:: You need to install the Python3 version of pip
 
 After installing pip, run::
 
@@ -71,7 +72,7 @@ either get the package from your distro or use pip to install it. On Ubuntu this
 
     sudo apt-get install python3-requests
 
-or via pip:
+or via pip::
 
     sudo pip3 install -r requirements.txt
 
@@ -79,6 +80,7 @@ Usage
 -----
 
 There are two ways to run the updater:
+
 * Using the console API (recommended)::
 
     owncloud-news-updater /path/to/owncloud
@@ -87,7 +89,7 @@ There are two ways to run the updater:
 
     owncloud-news-updater https://domain.com/path/to/owncloud --user admin_user --password admin_password
 
-..note :: **admin_user** is a user id with admin rights, **admin_password** the user's password
+.. note:: **admin_user** is a user id with admin rights, **admin_password** the user's password
 
 You can view all options by running::
 
