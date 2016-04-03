@@ -2,8 +2,8 @@ from platform import python_version
 from sys import exit, version_info
 from setuptools import setup, find_packages
 
-if version_info < (3,):
-    print('Error: Python 3 required but found %s' % python_version())
+if version_info < (3,2):
+    print('Error: Python 3.2 required but found %s' % python_version())
     exit(1)
 
 with open('requirements.txt', 'r') as infile:

@@ -11,6 +11,7 @@ import configparser
 from os.path import dirname, realpath, join
 from owncloud_news_updater.updater import WebUpdater, ConsoleUpdater
 from owncloud_news_updater.version import get_version
+from platform import python_version
 
 __author__ = 'Bernhard Posselt'
 __copyright__ = 'Copyright 2012-2016, Bernhard Posselt'
@@ -20,6 +21,9 @@ __email__ = 'dev@bernhard-posselt.com'
 
 
 def main():
+    if sys.version_info < (3, 2):
+        print('Error: Python 3.2 required but found %s' % python_version())
+        exit(1)
     parser = argparse.ArgumentParser()
     parser.add_argument('--testrun',
                         help='Run update only once, DO NOT use this in a '
@@ -134,7 +138,4 @@ def _exit(parser, message):
 
 
 if __name__ == '__main__':
-    if sys.version_info < (3, 0):
-        print('Python 3.0 or higher is required to run this script')
-    else:
-        main()
+    main()
