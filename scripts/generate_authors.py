@@ -26,7 +26,7 @@ def parse_git_author(line):
 
 
 def to_markdown(author):
-    return '* [%s](mailto:%s)' % (author['name'], author['email'])
+    return '* `%s <mailto:%s`_' % (author['name'], author['email'])
 
 
 def get_authors_file():

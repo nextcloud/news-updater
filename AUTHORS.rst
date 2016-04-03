@@ -1,3 +1,3 @@
 # Authors
 
-* [Bernhard Posselt](mailto:dev@bernhard-posselt.com)
+* `Bernhard Posselt <mailto:dev@bernhard-posselt.com`_
