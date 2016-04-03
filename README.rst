@@ -1,17 +1,24 @@
 ownCloud News Updater
 =====================
 
-ownCloud does not require people to install threading or multiprocessing libraries.
-Because the feed update process is mainly limited by I/O,
-parallell fetching of RSS feed updates can speed up the updating process significantly.
+ownCloud does not require people to install threading or multiprocessing
+libraries. Because the feed update process is mainly limited by I/O, parallel
+fetching of RSS feed updates can speed up the updating process significantly.
 
-This can be done by using a script that uses the `updater REST API <https://github.com/owncloud/news/wiki/Cron-1.2>`_
-or (new in 8.1.0) the console based update API
+In addition, Web Cron is not a supported cron setting since the update
+process may time out.
 
-Preinstallation
----------------
+Therefore the News app provides an API that offers a more fine grained
+control over updating feeds. This Python project implements an update
+mechanism that is based on the `updater REST API <https://github.com/owncloud/news/wiki/Updater-1.2>`_ or (new in 8.1.0) the
+console based update API.
 
-To run the updates via an external threaded script the cron updater has to be disabled. To do that go to the admin section an uncheck the "Use ownCloud cron" checkbox or open **owncloud/data/news/config/config.ini** set::
+Pre-Installation
+----------------
+
+To run the updates via an external threaded script the cron updater has to be
+disabled. To do that go to the admin section an uncheck the **Use ownCloud
+cron** checkbox or open **owncloud/data/news/config/config.ini** and set::
 
     useCronUpdates = true
 
@@ -19,93 +26,143 @@ to::
 
     useCronUpdates = false
 
-Then install the following packages (my vary depending on your distribution):
+Installation
+------------
+There are two different ways to install the updater:
+* Installation using pip
+* Manual installation
+* No installation
 
-* python3-pip
-* python3-setuptools
-* make
+Installation using pip
+~~~~~~~~~~~~~~~~~~~~~~
+Since 8.2 the package is available on pypi for installation via pip (the
+Python library package manager).
 
-If you are **on Debian 7** you want to create a symlink for pip to make use of the Makefile::
+To install pip on your distribution of choice, `consolidate the pip
+documentation <http://python-packaging-user-guide.readthedocs
+.org/en/latest/install_requirements_linux/>`_
 
-    sudo ln -s /usr/bin/pip-3.2 /usr/bin/pip3
+..note :: You need to install the Python3 version of pip
 
+After installing pip, run::
 
-Updating
---------
+    pip3 install owncloud-news-updater
 
-.. note:: In general it is recommended to update the updater after every News app update
+To update the library, run::
 
-If you have installed the updater on your system you can update it by running::
+    pip3 install --upgrade owncloud-news-updater
 
-    sudo make update
+Manual installation
+~~~~~~~~~~~~~~~~~~~
+If you don't want to install the updater via pip, you can install it manually.
+This requires setuptools to be installed. On Ubuntu this can be done by running::
 
-The **init and config files won't be updated** and you need to update them manually in case there is a breaking change therefore follow the `CHANGELOG.md <https://github.com/owncloud/news/blob/master/CHANGELOG.md>`_ to stay up to date with the updater changes.
+    sudo apt-get install python3-setuptools
 
-Finally reload the systemd service::
+Then install the package like this::
 
-    sudo systemctl restart owncloud-news-updater
-
+    python3 setup.py install
 
 No installation
----------------
+~~~~~~~~~~~~~~~
+If you do not want to install the script at all you can call it directly. This
+however requires you to have the requests module to be installed. To do that
+either get the package from your distro or use pip to install it. On Ubuntu this would be::
 
-If you do not want to install the script at all you can call it directly using::
+    sudo apt-get install python3-requests
 
-    python3 -m owncloud_news_updater -c /path/to/config.ini
+or via pip:
 
-.. note:: Keep in mind that you need to restart the script if you want to run a new version
+    sudo pip3 install -r requirements.txt
+
+Usage
+-----
+
+There are two ways to run the updater:
+* Using the console API (recommended)::
+
+    owncloud-news-updater /path/to/owncloud
+
+* Using the REST API (when running the updater on a different machine)::
+
+    owncloud-news-updater https://domain.com/path/to/owncloud --user admin_user --password admin_password
+
+..note :: **admin_user** is a user id with admin rights, **admin_password** the user's password
+
+You can view all options by running::
+
+    owncloud-news-updater --help
+
+usage: __main__.py [-h] [--testrun] [--threads THREADS] [--timeout TIMEOUT]
+                   [--interval INTERVAL] [--loglevel {info,error}]
+                   [--config CONFIG] [--user USER] [--password PASSWORD]
+                   [url]
+
+positional arguments:
+  url                   The URL or absolute path to the directory where
+                        owncloud is installed. Must be specified on the
+                        command line or in the config file. If the URL starts
+                        with http:// or https://, a user and password are
+                        required. Otherwise updater tries to use the console
+                        based API which was added in 8.1.0
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --testrun             Run update only once, DO NOT use this in a cron job,
+                        only recommended for testing
+  --threads THREADS, -t THREADS
+                        How many feeds should be fetched in parallel, defaults
+                        to 10
+  --timeout TIMEOUT, -s TIMEOUT
+                        Maximum number of seconds for updating a feed,
+                        defaults to 5 minutes
+  --interval INTERVAL, -i INTERVAL
+                        Update interval between fetching the next round of
+                        updates in seconds, defaults to 15 minutes. The update
+                        timespan will be subtracted from the interval.
+  --loglevel {info,error}, -l {info,error}
+                        Log granularity, info will log all urls and received
+                        data, error will only log errors
+  --config CONFIG, -c CONFIG
+                        Path to config file where all parameters except can be
+                        defined as key values pair. An example is in
+                        bin/example_config.ini
+  --user USER, -u USER  Admin username to log into ownCloud. Must be specified
+                        on the command line or in the config file if the
+                        updater should update over HTTP
+  --password PASSWORD, -p PASSWORD
+                        Admin password to log into ownCloud if the updater
+                        should update over HTTP
 
 
-Installation: No init system
-----------------------------
 
-If you decide against using an init system to run the script simply run::
+You can also put your settings in a config file, looking like this:
 
-    sudo setup.py install
+.. code:: ini
 
-Then you can run the updater daemon using::
+    [updater]
+    user = admin
+    password = admin
+    threads = 10
+    interval = 900
+    loglevel = error
+    testrun = false
+    url = http://localhost/owncloud
 
-    owncloud-news-updater --user USERNAME --password PASSWORD http://yourcloud.com
-
-or if you are using a config file::
+Then run the updater with::
 
     owncloud-news-updater -c /path/to/config
 
 
-To see all config options run::
+Running the updater as SystemD service
+--------------------------------------
+Since almost always you want to run and stop the updater using your in init system,
+the updater contains a simple example SystemD service file in
+**systemd/owncloud-news-updater.service**. To install it, copy the file into the
+**/etc/systemd/system/** folder and run::
 
-    owncloud-news-updater -h
-
-.. note:: Keep in mind that you need to restart the script if you want to run a new version
-
-
-Installation: SystemD
----------------------
-
-To install the script for systemd run::
-
-    sudo make install-systemd
-
-Then edit the config in **/etc/owncloud/news/updater.ini** with your details and run::
-
-    owncloud-news-updater -c /etc/owncloud/news/updater.ini
-
-to test your settings. If everything worked out fine, enable the systemd unit with::
-
-    sudo systemctl enable owncloud-news-updater.service
-    sudo systemctl start owncloud-news-updater.service
-
-If you make changes to the **updater.ini** file don't forget to reload the service with::
-
-    sudo systemctl restart owncloud-news-updater.service
-
-
-Uninstallation
---------------
-
-To uninstall the updater run::
-
-    sudo make uninstall
+    systemctl enable owncloud-news-updater.service
+    systemctl start owncloud-news-updater.service
 
 
 Self signed certificates
@@ -116,19 +173,3 @@ Should you use a self signed certificate over SSL, first consider getting a free
     cat /path/to/your/cert/cacert.pem >> /usr/local/lib/python3.X/dist-packages/requests/cacert.pem
 
 The directories might vary depending on your distribution and Python version.
-
-
-Debugging
----------
-
-If you are using JournalD which is included in SystemD you can read the error log using::
-
-    journalctl -u owncloud-news-updater.service
-
-
-Development
------------
-
-If you want to edit the python code and test it run::
-
-    python3 -m owncloud_news_updater -c /path/to/config.ini

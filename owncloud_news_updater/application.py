@@ -4,62 +4,67 @@ Updater script for the news app which allows multiple feeds to be updated at
 once to speed up the update process. Built in cron has to be disabled in the
 news config, see the README.rst file in the top directory for more information.
 """
-__author__ = 'Bernhard Posselt'
-__copyright__ = 'Copyright 2012-2016, Bernhard Posselt'
-__license__ = 'AGPL3+'
-__maintainer__ = 'Bernhard Posselt'
-__email__ = 'dev@bernhard-posselt.com'
-
 import os
 import sys
 import argparse
 import configparser
-
 from owncloud_news_updater.updater import WebUpdater, ConsoleUpdater
+
+__author__ = 'Bernhard Posselt'
+__copyright__ = 'Copyright 2012-2016, Bernhard Posselt'
+__license__ = 'GPL3+'
+__maintainer__ = 'Bernhard Posselt'
+__email__ = 'dev@bernhard-posselt.com'
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--testrun',
-        help='Run update only once, DO NOT use this in a cron job, only \
-              recommended for testing', action='store_true')
+                        help='Run update only once, DO NOT use this in a '
+                             'cron job, only recommended for testing',
+                        action='store_true')
     parser.add_argument('--threads', '-t',
-        help='How many feeds should be fetched in parallel, defaults to 10',
-        default=10,
-        type=int)
+                        help='How many feeds should be fetched in parallel, '
+                             'defaults to 10',
+                        default=10,
+                        type=int)
     parser.add_argument('--timeout', '-s',
-        help='Maximum number of seconds for updating a feed, \
+                        help='Maximum number of seconds for updating a feed, \
               defaults to 5 minutes',
-        default=5*60,
-        type=int)
+                        default=5 * 60,
+                        type=int)
     parser.add_argument('--interval', '-i',
-        help='Update interval between fetching the next round of \
-            updates in seconds, defaults to 15 minutes. The update timespan \
-            will be subtracted from the interval.',
-        default=15*60,
-        type=int)
+                        help='Update interval between fetching the next '
+                             'round of updates in seconds, defaults to 15 '
+                             'minutes. The update timespan will be '
+                             'subtracted from the interval.',
+                        default=15 * 60,
+                        type=int)
     parser.add_argument('--loglevel', '-l',
-        help='Log granularity, info will log all urls and received data, error \
-        will only log errors',
-        default='error',
-        choices=['info', 'error'])
+                        help='Log granularity, info will log all urls and '
+                             'received data, error will only log errors',
+                        default='error',
+                        choices=['info', 'error'])
     parser.add_argument('--config', '-c',
-        help='Path to config file where all parameters except can be defined \
-        as key values pair. An example is in bin/example_config.ini')
+                        help='Path to config file where all parameters '
+                             'except can be defined as key values pair. An '
+                             'example is in bin/example_config.ini')
     parser.add_argument('--user', '-u',
-        help='Admin username to log into ownCloud. Must be specified on the \
-        command line or in the config file if the updater should update over \
-        HTTP')
+                        help='Admin username to log into ownCloud. Must be '
+                             'specified on the command line or in the config '
+                             'file if the updater should update over HTTP')
     parser.add_argument('--password', '-p',
-        help='Admin password to log into ownCloud if the updater should update \
-        over HTTP')
+                        help='Admin password to log into ownCloud if the '
+                             'updater should update over HTTP')
     parser.add_argument('url',
-        help='The URL or absolute path to the directory where owncloud is \
-        installed. Must be specified on the command line or in the config \
-        file. If the URL starts with http:// or https://, a user and password \
-        are required. Otherwise updater tries to use the console based API \
-        which was added in 8.1.0',
-        nargs='?')
+                        help='The URL or absolute path to the directory '
+                             'where owncloud is installed. Must be specified '
+                             'on the command line or in the config file. If '
+                             'the URL starts with http:// or https://, '
+                             'a user and password are required. Otherwise '
+                             'updater tries to use the console based API '
+                             'which was added in 8.1.0',
+                        nargs='?')
     args = parser.parse_args()
 
     # read config file if given
@@ -99,8 +104,9 @@ def main():
         _exit(parser, 'Web API requires a user')
 
     if not isWeb and not os.path.isabs(args.url):
-        _exit(parser, ('Absolute path to ownCloud installation required, given '
-                        '%s') % args.url)
+        _exit(parser,
+              ('Absolute path to ownCloud installation required, given '
+               '%s') % args.url)
 
     if not isWeb and not os.path.isdir(args.url):
         _exit(parser, '%s is not a directory' % args.url)
@@ -120,6 +126,7 @@ def _exit(parser, message):
     print(message, file=sys.stderr)
     parser.print_help()
     exit(1)
+
 
 if __name__ == '__main__':
     if sys.version_info < (3, 0):

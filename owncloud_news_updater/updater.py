@@ -6,17 +6,17 @@ import threading
 import requests
 import time
 import logging
-import urllib
+import urllib.parse
 from subprocess import check_output
+
 
 def check_status_code(response):
     if response.status_code != 200:
         raise Exception('Request failed with %i: %s' % (response.status_code,
-            response.text))
+                                                        response.text))
 
 
 class Updater:
-
     def __init__(self, thread_num, interval, run_once, log_level):
         self.thread_num = thread_num
         self.run_once = run_once
@@ -33,7 +33,7 @@ class Updater:
     def run(self):
         if self.run_once:
             self.logger.info('Running update once with %d threads' %
-                                self.thread_num)
+                             self.thread_num)
         else:
             self.logger.info(('Running update in an interval of %d seconds '
                               'using %d threads') % (self.interval,
@@ -63,7 +63,7 @@ class Updater:
                 if timeout > 0:
                     self.logger.info(('Finished updating in %d seconds, '
                                       'next update in %d seconds') %
-                                      (update_duration_seconds, timeout))
+                                     (update_duration_seconds, timeout))
                     time.sleep(timeout)
             except (Exception) as e:
                 self.logger.error('%s: Trying again in 30 seconds' % e)
@@ -84,7 +84,6 @@ class Updater:
 
 
 class UpdateThread(threading.Thread):
-
     lock = threading.Lock()
 
     def __init__(self, feeds, logger):
@@ -101,7 +100,7 @@ class UpdateThread(threading.Thread):
                     return
             try:
                 self.logger.info('Updating feed with id %s and user %s' %
-                    (feed['id'], feed['userId']))
+                                 (feed['id'], feed['userId']))
                 self.update_feed(feed)
             except (Exception) as e:
                 self.logger.error(e)
@@ -112,7 +111,6 @@ class UpdateThread(threading.Thread):
 
 
 class WebUpdater(Updater):
-
     def __init__(self, base_url, thread_num, interval, run_once,
                  user, password, timeout, log_level):
         super().__init__(thread_num, interval, run_once, log_level)
@@ -130,7 +128,8 @@ class WebUpdater(Updater):
         self.update_url = '%s/feeds/update' % self.base_url
 
     def before_update(self):
-        self.logger.info('Calling before update url:  %s' % self.before_cleanup_url)
+        self.logger.info(
+            'Calling before update url:  %s' % self.before_cleanup_url)
         before = requests.get(self.before_cleanup_url, auth=self.auth)
         check_status_code(before)
 
@@ -146,13 +145,13 @@ class WebUpdater(Updater):
         return json.loads(feeds_json)['feeds']
 
     def after_update(self):
-        self.logger.info('Calling after update url:  %s' % self.after_cleanup_url)
+        self.logger.info(
+            'Calling after update url:  %s' % self.after_cleanup_url)
         after = requests.get(self.after_cleanup_url, auth=self.auth)
         check_status_code(after)
 
 
 class WebUpdateThread(UpdateThread):
-
     def __init__(self, feeds, logger, update_url, auth, timeout):
         super().__init__(feeds, logger)
         self.update_url = update_url
@@ -166,32 +165,31 @@ class WebUpdateThread(UpdateThread):
 
         # turn the pyton dict into url parameters
         data = urllib.parse.urlencode(feed)
-        headers = {
-            'Accept': 'text/plain'
-        }
         url = '%s?%s' % (self.update_url, data)
         request = requests.get(url, auth=self.auth, timeout=self.timeout)
         check_status_code(request)
 
 
 class ConsoleUpdater(Updater):
-
     def __init__(self, directory, thread_num, interval, run_once, log_level):
         super().__init__(thread_num, interval, run_once, log_level)
         self.directory = directory.rstrip('/')
         base_command = ['php', '-f', self.directory + '/occ']
-        self.before_cleanup_command = base_command + ['news:updater:before-update']
+        self.before_cleanup_command = base_command + [
+            'news:updater:before-update']
         self.all_feeds_command = base_command + ['news:updater:all-feeds']
         self.update_feed_command = base_command + ['news:updater:update-feed']
-        self.after_cleanup_command = base_command + ['news:updater:after-update']
+        self.after_cleanup_command = base_command + [
+            'news:updater:after-update']
 
     def before_update(self):
         self.logger.info('Running before update command %s' %
-                            ' '.join(self.before_cleanup_command))
+                         ' '.join(self.before_cleanup_command))
         check_output(self.before_cleanup_command)
 
     def start_update_thread(self, feeds):
-        return ConsoleUpdateThread(feeds, self.logger, self.update_feed_command)
+        return ConsoleUpdateThread(feeds, self.logger,
+                                   self.update_feed_command)
 
     def all_feeds(self):
         feeds_json = check_output(self.all_feeds_command).strip()
@@ -201,12 +199,11 @@ class ConsoleUpdater(Updater):
 
     def after_update(self):
         self.logger.info('Running after update command %s' %
-                            ' '.join(self.after_cleanup_command))
+                         ' '.join(self.after_cleanup_command))
         check_output(self.before_cleanup_command)
 
 
 class ConsoleUpdateThread(UpdateThread):
-
     def __init__(self, feeds, logger, update_base_command):
         super().__init__(feeds, logger)
         self.update_base_command = update_base_command
