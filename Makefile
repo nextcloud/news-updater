@@ -31,5 +31,5 @@ pypi: clean
 .PHONY: test
 test:
 	# keep it simple until we've got tests
-	pep8 owncloud_news_updater
+	pep8 .
 	python3 -m owncloud_news_updater --version
