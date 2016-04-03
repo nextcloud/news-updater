@@ -1,7 +1,7 @@
 # This makefile is only intended for development
 
 install:
-    sudo python3 setup.py install --install-scripts=/usr/bin
+	sudo python3 setup.py install --install-scripts=/usr/bin
 
 clean:
 	rm -rf dist
