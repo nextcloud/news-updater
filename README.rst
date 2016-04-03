@@ -1,6 +1,8 @@
 ownCloud News Updater
 =====================
 
+.. image:: https://img.shields.io/pypi/v/owncloud_news_updater.svg
+    :target: https://pypi.python.org/pypi/owncloud_news_updater
 .. image:: https://travis-ci.org/owncloud/news-updater.svg?branch=master
     :target: https://travis-ci.org/owncloud/news-updater
 
