@@ -21,6 +21,7 @@ Dependencies
 ------------
 
 * Python >=3.2
+* requests
 
 Pre-Installation
 ----------------
