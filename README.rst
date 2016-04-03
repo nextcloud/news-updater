@@ -204,8 +204,8 @@ As for Systemd, you can create a simple text file at
 
 Then to enable and start it run::
 
-    systemctl enable owncloud-news-updater.service
-    systemctl start owncloud-news-updater.service
+    sudo systemctl enable owncloud-news-updater.service
+    sudo systemctl start owncloud-news-updater.service
 
 **Note**: If you are using the cli based updater (as in set an absolute directory as url)
 you need to set the webserver user as user in the unit file. Otherwise the command
