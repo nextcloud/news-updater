@@ -47,15 +47,15 @@ documentation <http://python-packaging-user-guide.readthedocs
 
 After installing pip, run::
 
-    sudo pip3 install owncloud-news-updater --install-option="--install-scripts=/usr/bin"
+    sudo pip3 install owncloud_news_updater --install-option="--install-scripts=/usr/bin"
 
 To update the library, run::
 
-    sudo pip3 install --upgrade owncloud-news-updater --install-option="--install-scripts=/usr/bin"
+    sudo pip3 install --upgrade owncloud_news_updater --install-option="--install-scripts=/usr/bin"
 
 To uninstall the library run::
 
-    sudo pip3 uninstall owncloud-news-updater
+    sudo pip3 uninstall owncloud_news_updater
 
 Manual installation
 ~~~~~~~~~~~~~~~~~~~
