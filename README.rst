@@ -97,7 +97,7 @@ There are two ways to run the updater:
 
     owncloud-news-updater /path/to/owncloud
 
-* Using the REST API (when running the updater on a different machine)::
+* Using the REST API (when running the updater on a different machine than ownCloud)::
 
     owncloud-news-updater https://domain.com/path/to/owncloud --user admin_user --password admin_password
 
