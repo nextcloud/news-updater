@@ -183,7 +183,7 @@ Should you use a self signed certificate over SSL, first consider getting a
 free valid cert signed from
 
 * `Lets Encrypt <https://letsencrypt.org/>`_
-* `StartSSL <http://startssl.com>`_
+* `StartSSL <https://www.startssl.com/>`_
 * `WoSign <https://www.wosign.com/english/>`_
 
 If you don't want to get a valid certificate, you need to add it to the installed certs::
