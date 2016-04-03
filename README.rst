@@ -84,6 +84,10 @@ or via pip::
 
     sudo pip3 install -r requirements.txt
 
+Then run the updater using::
+
+    python3 -m owncloud_news_updater /path/to/owncloud
+
 Usage
 -----
 
