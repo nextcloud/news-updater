@@ -184,7 +184,7 @@ Then run the updater with::
 Running The Updater As Systemd Service
 --------------------------------------
 Almost always you want to run and stop the updater using your in init system.
-As for Systemd, you can create a simple text file in
+As for Systemd, you can create a simple text file at
 **/etc/systemd/system/owncloud-news-updater.service** with the following contents:
 
 .. code:: ini
@@ -206,9 +206,9 @@ Then to enable and start it run::
     systemctl start owncloud-news-updater.service
 
 **Note**: If you are using the cli based updater (as in set an absolute directory as url)
-you need to set the webserver user as user in the unit file since ownCloud requires
-every call to it's cli to be executed as the user that owns it. This user
-varies from distribution to distribution. In Debian and Ubuntu you would use the
+you need to set the webserver user as user in the unit file. Otherwise the command
+will fail because ownCloud checks for the owner of its files. This user
+varies from distribution to distribution, e.g in Debian and Ubuntu you would use the
 **www-data** user:
 
 .. code:: ini
