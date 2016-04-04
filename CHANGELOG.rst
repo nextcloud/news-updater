@@ -8,7 +8,7 @@ Changelog
 
 **Miscellaneous**
 
-- Move the updater from the News repository
+- Move the updater from the News repository into a separate one
 - Publish the app on pypi so it can be installed using pip
 - Require Python 3.2 as minimum Python version
 - Remove outdated rpm installation script
