@@ -8,7 +8,6 @@ import os
 import sys
 import argparse
 import configparser
-from os.path import dirname, realpath, join
 from owncloud_news_updater.updater import WebUpdater, ConsoleUpdater
 from owncloud_news_updater.version import get_version
 from platform import python_version
@@ -70,7 +69,7 @@ def main():
                              'where owncloud is installed. Must be specified '
                              'on the command line or in the config file. If '
                              'the URL starts with http:// or https://, '
-                             'a user and password are required. Otherwise '
+                             'a user and password are required. Otherwise the '
                              'updater tries to use the console based API '
                              'which was added in 8.1.0',
                         nargs='?')
