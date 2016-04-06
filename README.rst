@@ -6,7 +6,7 @@ ownCloud News Updater
 .. image:: https://travis-ci.org/owncloud/news-updater.svg?branch=master
     :target: https://travis-ci.org/owncloud/news-updater
 
-This Python library is a parllel feed updater for the `ownCloud News app<https://github.com/owncloud/news>`_
+This Python library is a parllel feed updater for the `ownCloud News app <https://github.com/owncloud/news>`_
 
 ownCloud does not require people to install threading or multiprocessing
 libraries. Because the feed update process is mainly limited by I/O, parallel
