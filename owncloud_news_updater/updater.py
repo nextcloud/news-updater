@@ -3,18 +3,12 @@ import sys
 import traceback
 import json
 import threading
-import requests
 import time
 import logging
 import urllib.parse
 from subprocess import check_output
 
-
-def check_status_code(response):
-    if response.status_code != 200:
-        raise Exception('Request failed with %i: %s' % (response.status_code,
-                                                        response.text))
-
+from owncloud_news_updater.http import http_get
 
 class Updater:
     def __init__(self, thread_num, interval, run_once, log_level):
@@ -130,25 +124,21 @@ class WebUpdater(Updater):
     def before_update(self):
         self.logger.info(
             'Calling before update url:  %s' % self.before_cleanup_url)
-        before = requests.get(self.before_cleanup_url, auth=self.auth)
-        check_status_code(before)
+        before = http_get(self.before_cleanup_url, auth=self.auth)
 
     def start_update_thread(self, feeds):
         return WebUpdateThread(feeds, self.logger, self.update_url, self.auth,
                                self.timeout)
 
     def all_feeds(self):
-        feeds_response = requests.get(self.all_feeds_url, auth=self.auth)
-        check_status_code(feeds_response)
-        feeds_json = feeds_response.text
+        feeds_json = http_get(self.all_feeds_url, auth=self.auth)
         self.logger.info('Received these feeds to update: %s' % feeds_json)
         return json.loads(feeds_json)['feeds']
 
     def after_update(self):
         self.logger.info(
             'Calling after update url:  %s' % self.after_cleanup_url)
-        after = requests.get(self.after_cleanup_url, auth=self.auth)
-        check_status_code(after)
+        after = http_get(self.after_cleanup_url, auth=self.auth)
 
 
 class WebUpdateThread(UpdateThread):
@@ -166,8 +156,7 @@ class WebUpdateThread(UpdateThread):
         # turn the pyton dict into url parameters
         data = urllib.parse.urlencode(feed)
         url = '%s?%s' % (self.update_url, data)
-        request = requests.get(url, auth=self.auth, timeout=self.timeout)
-        check_status_code(request)
+        request = http_get(url, auth=self.auth, timeout=self.timeout)
 
 
 class ConsoleUpdater(Updater):

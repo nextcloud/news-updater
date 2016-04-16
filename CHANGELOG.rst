@@ -2,6 +2,12 @@
 
 Changelog
 ---------
+8.3.0
++++++
+
+**Improvements**
+
+- Get rid of the python-requests dependency. The library now needs zero dependencies and can be used very easily.
 
 8.2.6
 +++++

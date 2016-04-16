@@ -6,9 +6,6 @@ if version_info < (3, 2):
     print('Error: Python 3.2 required but found %s' % python_version())
     exit(1)
 
-with open('requirements.txt', 'r') as infile:
-    install_requires = infile.read().split('\n')
-
 with open('README.rst', 'r') as infile:
     long_description = infile.read()
 
@@ -26,7 +23,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     license='GPL',
-    install_requires=install_requires,
+    install_requires=[],
     keywords=['owncloud', 'news', 'updater', 'RSS', 'Atom', 'feed', 'reader'],
     classifiers=[
         'Intended Audience :: System Administrators',

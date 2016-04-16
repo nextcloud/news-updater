@@ -24,7 +24,7 @@ Dependencies
 ------------
 
 * **Python >=3.2**
-* **requests**
+
 
 Pre-Installation
 ----------------
@@ -87,17 +87,9 @@ To uninstall the updater run::
 
 No Installation
 ~~~~~~~~~~~~~~~
-If you do not want to install the script at all you can call it directly. This
-however requires the requests module to be installed. To do that
-either get the package from your distro or use pip to install it. On Ubuntu this would be::
+If you do not want to install the script at all you can call it directly.
 
-    sudo apt-get install python3-requests
-
-or via pip::
-
-    sudo pip3 install -r requirements.txt
-
-Then run the updater using::
+Simply run the updater using::
 
     python3 -m owncloud_news_updater /path/to/owncloud
 
@@ -233,15 +225,9 @@ user, but again, that might vary depending on your distribution.
 Self Signed Certificates
 ------------------------
 
-Should you use a self signed certificate over SSL, first consider getting a
-free valid cert signed from
+Should you use a self signed certificate over SSL, consider getting a free valid cert signed from:
 
 * `Lets Encrypt <https://letsencrypt.org/>`_
 * `StartSSL <https://www.startssl.com/>`_
 * `WoSign <https://www.wosign.com/english/>`_
 
-If you don't want to get a valid certificate, you need to add it to the installed certs::
-
-    cat /path/to/your/cert/cacert.pem >> /usr/local/lib/python3.X/dist-packages/requests/cacert.pem
-
-The directories might vary depending on your distribution and Python version.
