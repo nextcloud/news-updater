@@ -10,6 +10,7 @@ from subprocess import check_output
 
 from owncloud_news_updater.http import http_get
 
+
 class Updater:
     def __init__(self, thread_num, interval, run_once, log_level):
         self.thread_num = thread_num
