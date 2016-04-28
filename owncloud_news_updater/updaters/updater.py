@@ -106,7 +106,7 @@ class UpdateThread(threading.Thread):
 
     def update_feed(self, feed):
         """
-
-        feed: the feed object
+        Updates a single feed
+        feed: the feed object containing the feedId and userId
         """
         raise NotImplementedError
