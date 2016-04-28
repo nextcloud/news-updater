@@ -6,6 +6,11 @@ import logging
 
 
 class Updater:
+    """
+    Baseclass for implementing your own updater type. Takes care of logging,
+    threading and the general workflow
+    """
+
     def __init__(self, thread_num, interval, run_once, log_level):
         self.thread_num = thread_num
         self.run_once = run_once
@@ -73,6 +78,10 @@ class Updater:
 
 
 class UpdateThread(threading.Thread):
+    """
+    Baseclass for the updating thread which executes the feed updates in
+    parallel
+    """
     lock = threading.Lock()
 
     def __init__(self, feeds, logger):
@@ -89,11 +98,15 @@ class UpdateThread(threading.Thread):
                     return
             try:
                 self.logger.info('Updating feed with id %s and user %s' %
-                                 (feed['id'], feed['userId']))
+                                 (feed.feedId, feed.userId))
                 self.update_feed(feed)
             except (Exception) as e:
                 self.logger.error(e)
                 traceback.print_exc(file=sys.stderr)
 
     def update_feed(self, feed):
+        """
+
+        feed: the feed object
+        """
         raise NotImplementedError

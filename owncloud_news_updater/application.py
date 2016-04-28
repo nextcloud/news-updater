@@ -10,8 +10,8 @@ import os
 import sys
 from platform import python_version
 
-from owncloud_news_updater.updaters.cli import ConsoleUpdater
-from owncloud_news_updater.updaters.web import WebUpdater
+from owncloud_news_updater.updaters.cli import CliUpdater, CliApi
+from owncloud_news_updater.updaters.web import WebUpdater, WebApi
 from owncloud_news_updater.version import get_version
 
 __author__ = 'Bernhard Posselt'
@@ -123,12 +123,14 @@ def main():
 
     # create the updater and run the threads
     if isWeb:
-        updater = WebUpdater(args.url, args.threads, args.interval,
-                             args.testrun, args.user, args.password,
-                             args.timeout, args.loglevel)
+        api = WebApi(args.url)
+        updater = WebUpdater(args.threads, args.interval, args.testrun,
+                             args.loglevel, args.timeout, api, args.user,
+                             args.password)
     else:
-        updater = ConsoleUpdater(args.url, args.threads, args.interval,
-                                 args.testrun, args.loglevel)
+        api = CliApi(args.url)
+        updater = CliUpdater(args.threads, args.interval, args.testrun,
+                             args.loglevel, api)
     updater.run()
 
 
