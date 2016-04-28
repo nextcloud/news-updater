@@ -4,13 +4,15 @@ Updater script for the news app which allows multiple feeds to be updated at
 once to speed up the update process. Built in cron has to be disabled in the
 news config, see the README.rst file in the top directory for more information.
 """
-import os
-import sys
 import argparse
 import configparser
-from owncloud_news_updater.updater import WebUpdater, ConsoleUpdater
-from owncloud_news_updater.version import get_version
+import os
+import sys
 from platform import python_version
+
+from owncloud_news_updater.updaters.cli import ConsoleUpdater
+from owncloud_news_updater.updaters.web import WebUpdater
+from owncloud_news_updater.version import get_version
 
 __author__ = 'Bernhard Posselt'
 __copyright__ = 'Copyright 2012-2016, Bernhard Posselt'

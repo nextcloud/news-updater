@@ -2,6 +2,15 @@
 
 Changelog
 ---------
+
+8.3.1
++++++
+
+**Bugfixes**
+
+- Get rid of the requirements.txt missing warning when install the lib
+- If a JSON parsing error happens, create a more helpful error message
+
 8.3.0
 +++++
 
