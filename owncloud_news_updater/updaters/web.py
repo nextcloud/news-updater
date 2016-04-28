@@ -2,7 +2,7 @@ import base64
 import urllib.parse
 import urllib.request
 
-from owncloud_news_updater.updaters.api import Api
+from owncloud_news_updater.updaters.api import Api, Feed
 from owncloud_news_updater.updaters.updater import Updater, UpdateThread
 
 
@@ -66,11 +66,35 @@ class WebUpdateThread(UpdateThread):
 
 class WebApi(Api):
     def __init__(self, base_url):
-        self.base_url = base_url
-        if not self.base_url.endswith('/'):
-            self.base_url += '/'
-        self.base_url += 'index.php/apps/news/api/v1-2'
+        base_url = self._generify_base_url(base_url)
+        self.base_url = '%sindex.php/apps/news/api/v1-2' % base_url
         self.before_cleanup_url = '%s/cleanup/before-update' % self.base_url
         self.after_cleanup_url = '%s/cleanup/after-update' % self.base_url
         self.all_feeds_url = '%s/feeds/all' % self.base_url
         self.update_url = '%s/feeds/update' % self.base_url
+
+    def _generify_base_url(self, url):
+        if not url.endswith('/'):
+            url += '/'
+        return url
+
+
+class WebApiV2(WebApi):
+    def __init__(self, base_url):
+        super().__init__(base_url)
+        base_url = self._generify_base_url(base_url)
+        self.base_url = '%sindex.php/apps/news/api/v2' % base_url
+        self.before_cleanup_url = '%s/updater/before-update' % self.base_url
+        self.after_cleanup_url = '%s/updater/after-update' % self.base_url
+        self.all_feeds_url = '%s/updater/all-feeds' % self.base_url
+        self.update_url = '%s/updater/update-feed' % self.base_url
+
+    def _parse_json(self, feed_json):
+        feed_json = feed_json['data']['updater']
+        return [Feed(info['feedId'], info['userId']) for info in feed_json]
+
+def create_web_api(api_level, url):
+    if api_level == 'v1-2':
+        return WebApi(url)
+    if api_level == 'v2':
+        return WebApiV2(url)

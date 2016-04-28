@@ -1,6 +1,6 @@
 from subprocess import check_output
 
-from owncloud_news_updater.updaters.api import Api
+from owncloud_news_updater.updaters.api import Api, Feed
 from owncloud_news_updater.updaters.updater import Updater, UpdateThread
 
 
@@ -52,3 +52,19 @@ class CliApi(Api):
         self.update_feed_command = base_command + ['news:updater:update-feed']
         self.after_cleanup_command = base_command + [
             'news:updater:after-update']
+
+
+class CliApiV2(CliApi):
+    def __init__(self, directory):
+        super().__init__(directory)
+
+    def _parse_json(self, feed_json):
+        feed_json = feed_json['data']['updater']
+        return [Feed(info['feedId'], info['userId']) for info in feed_json]
+
+
+def create_cli_api(api_level, directory):
+    if api_level == 'v1-2':
+        return CliApi(directory)
+    if api_level == 'v2':
+        return CliApiV2(directory)

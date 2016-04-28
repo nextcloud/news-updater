@@ -10,8 +10,8 @@ import os
 import sys
 from platform import python_version
 
-from owncloud_news_updater.updaters.cli import CliUpdater, CliApi
-from owncloud_news_updater.updaters.web import WebUpdater, WebApi
+from owncloud_news_updater.updaters.cli import CliUpdater, create_cli_api
+from owncloud_news_updater.updaters.web import WebUpdater, create_web_api
 from owncloud_news_updater.version import get_version
 
 __author__ = 'Bernhard Posselt'
@@ -47,6 +47,11 @@ def main():
                              'subtracted from the interval.',
                         default=15 * 60,
                         type=int)
+    parser.add_argument('--apilevel', '-a',
+                        help='API level. Use v2 for News 9.0.0 or greater, '
+                             'v1-2 for lower versions',
+                        default='v1-2',
+                        choices=['v1-2', 'v2'])
     parser.add_argument('--loglevel', '-l',
                         help='Log granularity, info will log all urls and '
                              'received data, error will only log errors',
@@ -123,12 +128,12 @@ def main():
 
     # create the updater and run the threads
     if isWeb:
-        api = WebApi(args.url)
+        api = create_web_api(args.apilevel, args.url)
         updater = WebUpdater(args.threads, args.interval, args.testrun,
                              args.loglevel, args.timeout, api, args.user,
                              args.password)
     else:
-        api = CliApi(args.url)
+        api = create_cli_api(args.apilevel, args.url)
         updater = CliUpdater(args.threads, args.interval, args.testrun,
                              args.loglevel, api)
     updater.run()

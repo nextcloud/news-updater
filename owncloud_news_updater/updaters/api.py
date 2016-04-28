@@ -18,8 +18,11 @@ class Api:
         """
         try:
             feed_json = json.loads(json_string)
-            feed_json = feed_json['feeds']
-            return [Feed(info['id'], info['userId']) for info in feed_json]
+            return self._parse_json(feed_json)
         except ValueError:
             msg = "Could not parse given JSON: %s" % json_string
             raise ValueError(msg)
+
+    def _parse_json(self, feed_json):
+        feed_json = feed_json['feeds']
+        return [Feed(info['id'], info['userId']) for info in feed_json]
