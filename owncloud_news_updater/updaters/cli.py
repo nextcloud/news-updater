@@ -36,7 +36,7 @@ class CliUpdateThread(UpdateThread):
         self.api = api
 
     def update_feed(self, feed):
-        command = self.api.update_base_command + [str(feed.feedId),
+        command = self.api.update_feed_command + [str(feed.feedId),
                                                   feed.userId]
         self.logger.info('Running update command %s' % ' '.join(command))
         check_output(command)
