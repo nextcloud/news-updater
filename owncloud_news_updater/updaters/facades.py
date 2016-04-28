@@ -20,6 +20,9 @@ def http_get(url, auth, timeout=5 * 60):
 
 
 def parse_json(json_string):
+    """
+    Wrapper around json.loads for better error messages
+    """
     try:
         return json.loads(json_string)
     except ValueError:
