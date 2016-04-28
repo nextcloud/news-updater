@@ -93,6 +93,7 @@ class WebApiV2(WebApi):
         feed_json = feed_json['data']['updater']
         return [Feed(info['feedId'], info['userId']) for info in feed_json]
 
+
 def create_web_api(api_level, url):
     if api_level == 'v1-2':
         return WebApi(url)
