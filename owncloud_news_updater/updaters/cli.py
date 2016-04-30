@@ -43,9 +43,11 @@ class CliUpdateThread(UpdateThread):
 
 
 class CliApi(Api):
-    def __init__(self, directory):
+    def __init__(self, directory, phpini):
         self.directory = directory.rstrip('/')
         base_command = ['php', '-f', self.directory + '/occ']
+        if phpini != None and phpini.strip() != '':
+            base_command += ['-c', phpini]
         self.before_cleanup_command = base_command + [
             'news:updater:before-update']
         self.all_feeds_command = base_command + ['news:updater:all-feeds']
@@ -55,16 +57,16 @@ class CliApi(Api):
 
 
 class CliApiV2(CliApi):
-    def __init__(self, directory):
-        super().__init__(directory)
+    def __init__(self, directory, phpini):
+        super().__init__(directory, phpini)
 
     def _parse_json(self, feed_json):
         feed_json = feed_json['data']['updater']
         return [Feed(info['feedId'], info['userId']) for info in feed_json]
 
 
-def create_cli_api(api_level, directory):
+def create_cli_api(api_level, directory, phpini):
     if api_level == 'v1-2':
-        return CliApi(directory)
+        return CliApi(directory, phpini)
     if api_level == 'v2':
-        return CliApiV2(directory)
+        return CliApiV2(directory, phpini)

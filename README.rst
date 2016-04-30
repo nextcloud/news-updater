@@ -114,9 +114,11 @@ You can view all options by running::
 
 ::
 
-    usage: __main__.py [-h] [--testrun] [--threads THREADS] [--timeout TIMEOUT]
-                       [--interval INTERVAL] [--loglevel {info,error}]
-                       [--config CONFIG] [--user USER] [--password PASSWORD]
+    usage: owncloud-news-updater [-h] [--testrun] [--threads THREADS] [--timeout TIMEOUT]
+                       [--interval INTERVAL] [--apilevel {v1-2,v2}]
+                       [--loglevel {info,error}] [--config CONFIG]
+                       [--phpini PHPINI] [--user USER] [--password PASSWORD]
+                       [--version]
                        [url]
 
     positional arguments:
@@ -124,8 +126,8 @@ You can view all options by running::
                             owncloud is installed. Must be specified on the
                             command line or in the config file. If the URL starts
                             with http:// or https://, a user and password are
-                            required. Otherwise updater tries to use the console
-                            based API which was added in 8.1.0
+                            required. Otherwise the updater tries to use the
+                            console based API which was added in 8.1.0
 
     optional arguments:
       -h, --help            show this help message and exit
@@ -141,6 +143,9 @@ You can view all options by running::
                             Update interval between fetching the next round of
                             updates in seconds, defaults to 15 minutes. The update
                             timespan will be subtracted from the interval.
+      --apilevel {v1-2,v2}, -a {v1-2,v2}
+                            API level. Use v2 for News 9.0.0 or greater, v1-2 for
+                            lower versions
       --loglevel {info,error}, -l {info,error}
                             Log granularity, info will log all urls and received
                             data, error will only log errors
@@ -148,6 +153,10 @@ You can view all options by running::
                             Path to config file where all parameters except can be
                             defined as key values pair. An example is in
                             bin/example_config.ini
+      --phpini PHPINI, -P PHPINI
+                            Custom absolute path to the php.ini file to use for the
+                            command line updater. If omitted, the default one will
+                            be used
       --user USER, -u USER  Admin username to log into ownCloud. Must be specified
                             on the command line or in the config file if the
                             updater should update over HTTP
@@ -170,6 +179,8 @@ You can also put your settings in a config file, looking like this:
     loglevel = error
     testrun = false
     url = /path/to/owncloud  # or https://domain.com/owncloud when using the REST API
+    phpini = /path/to/custom/php.ini
+    apilevel = v1-2  # or v2 for News 9.0.0 or greater
 
 Then run the updater with::
 

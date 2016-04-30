@@ -3,6 +3,14 @@
 Changelog
 ---------
 
+8.4.0
++++++
+
+**Improvements**
+
+- Add a console and config parameter for setting a custom php.ini path
+- Add support for API v2 which is in draft phase
+
 8.3.1
 +++++
 

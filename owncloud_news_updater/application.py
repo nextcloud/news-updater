@@ -61,6 +61,10 @@ def main():
                         help='Path to config file where all parameters '
                              'except can be defined as key values pair. An '
                              'example is in bin/example_config.ini')
+    parser.add_argument('--phpini', '-P',
+                        help='Custom absolute path to the php.ini file to use '
+                             'for the command line updater. If omitted, the '
+                             'default one will be used')
     parser.add_argument('--user', '-u',
                         help='Admin username to log into ownCloud. Must be '
                              'specified on the command line or in the config '
@@ -106,6 +110,10 @@ def main():
             args.url = config_values['url']
         if 'loglevel' in config_values:
             args.loglevel = config_values['loglevel']
+        if 'phpini' in config_values:
+            args.phpini = config_values['phpini']
+        if 'apilevel' in config_values:
+            args.apilevel = config_values['apilevel']
 
     if not args.url:
         _exit(parser, 'No url or directory given')
@@ -133,7 +141,7 @@ def main():
                              args.loglevel, args.timeout, api, args.user,
                              args.password)
     else:
-        api = create_cli_api(args.apilevel, args.url)
+        api = create_cli_api(args.apilevel, args.url, args.phpini)
         updater = CliUpdater(args.threads, args.interval, args.testrun,
                              args.loglevel, api)
     updater.run()
