@@ -46,7 +46,7 @@ class CliApi(Api):
     def __init__(self, directory, phpini):
         self.directory = directory.rstrip('/')
         base_command = ['php', '-f', self.directory + '/occ']
-        if phpini != None and phpini.strip() != '':
+        if phpini is not None and phpini.strip() != '':
             base_command += ['-c', phpini]
         self.before_cleanup_command = base_command + [
             'news:updater:before-update']
