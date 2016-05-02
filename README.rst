@@ -266,17 +266,19 @@ Using The CLI Based Updater Fails
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The updater uses the PHP executable to run the occ file inside your owncloud directory. The general process boils down to the following::
 
+.. code-block:: bash
+
     # delete folders and feeds marked for deletion
-    $ php -f /home/bernhard/programming/core/occ news:updater:before-update
+    php -f /home/bernhard/programming/core/occ news:updater:before-update
 
     # get all feeds to udpate
-    $ php -f /home/bernhard/programming/core/occ news:updater:all-feeds
+    php -f /home/bernhard/programming/core/occ news:updater:all-feeds
 
     # run all feed updates
-    $ php -f /home/bernhard/programming/core/occ news:updater:update-feed FEED_ID USER_ID
+    php -f /home/bernhard/programming/core/occ news:updater:update-feed FEED_ID USER_ID
 
     # delete old articles
-    $ php -f /home/bernhard/programming/core/occ news:updater:after-update
+    php -f /home/bernhard/programming/core/occ news:updater:after-update
 
 Most of the time there are two possible points of failure that can be debugged by using the **--logelevel info** parameter:
 * Most distributions uses different **php.ini** files for your command line and web-server. This can manifest itself in weird errors like not being able to connect to the database. The solution is to either adjust **php.ini** used for the CLI PHP or to use a different **php.ini** altogether by specifying the **--phpini** parameter, e.g.::
