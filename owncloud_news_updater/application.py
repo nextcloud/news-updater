@@ -95,12 +95,12 @@ def main():
             print('Error: could not find config file %s' % args.config)
             exit(1)
 
-        config_values = config['updater']
-        valid_config_keys = ['user', 'password', 'threads', 'interval',
-                             'url', 'loglevel', 'phpini', 'apilevel']
-        for config_key in valid_config_keys:
-            if not hasattr(args, config_key):
-                setattr(args, config_key, config_values[config_key])
+        ini_values = config['updater']
+        valid_ini_values = ['user', 'password', 'threads', 'interval',
+                            'url', 'loglevel', 'phpini', 'apilevel']
+        for ini_key in valid_ini_values:
+            if use_ini_param(args, ini_values, ini_key):
+                setattr(args, ini_key, ini_values[ini_key])
     if not args.url:
         _exit(parser, 'No url or directory given')
 
@@ -132,6 +132,12 @@ def main():
                              args.loglevel, api)
     updater.run()
 
+
+def use_ini_param(args, ini_values, ini_key):
+    cli_param_missing = not hasattr(args, ini_key)
+    cli_param_none = getattr(args, ini_key) is None
+    ini_key_exists = ini_key in ini_values
+    return (cli_param_missing or cli_param_none) and ini_key_exists
 
 def _exit(parser, message):
     print(message, file=sys.stderr)
