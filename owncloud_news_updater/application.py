@@ -93,9 +93,12 @@ def main():
         ini_values = config['updater']
 
         # parse using proper data types
-        to_str = lambda section, key: section.get(key)
-        to_int = lambda section, key: int(section.get(key))
-        to_bool = lambda section, key: int(section.getboolean(key))
+        def to_str(section, key):
+            return section.get(key)
+        def to_int (section, key):
+            return int(section.get(key))
+        def to_bool (section, key):
+            return int(section.getboolean(key))
 
         valid_ini_values = {
             'user': to_str,
