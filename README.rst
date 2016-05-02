@@ -251,7 +251,7 @@ If you still have to use a self-signed certificate no matter what, don't patch t
 
 Can I Run The Updater Using Cron
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Yes, you can by adding the **--testrun** parameter which will exit the program after one complete feed update.
+Yes, you can by adding the **--testrun** parameter which will exit after an update.
 
 However it's **highly discouraged** since it's possible for more than updater to run in parallel if your cronjob runs too often or an update takes too long.
 
