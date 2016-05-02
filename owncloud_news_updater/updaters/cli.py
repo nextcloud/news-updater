@@ -10,7 +10,7 @@ class CliUpdater(Updater):
         self.api = api
 
     def before_update(self):
-        self.logger.info('Running before update command %s' %
+        self.logger.info('Running before update command: %s' %
                          ' '.join(self.api.before_cleanup_command))
         check_output(self.api.before_cleanup_command)
 
@@ -21,11 +21,13 @@ class CliUpdater(Updater):
     def all_feeds(self):
         feeds_json = check_output(self.api.all_feeds_command).strip()
         feeds_json = str(feeds_json, 'utf-8')
+        self.logger.info('Running get all feeds command: %s' %
+                         ' '.join(self.api.all_feeds_command))
         self.logger.info('Received these feeds to update: %s' % feeds_json)
         return self.api.parse_feed(feeds_json)
 
     def after_update(self):
-        self.logger.info('Running after update command %s' %
+        self.logger.info('Running after update command: %s' %
                          ' '.join(self.api.after_cleanup_command))
         check_output(self.api.before_cleanup_command)
 
@@ -38,7 +40,7 @@ class CliUpdateThread(UpdateThread):
     def update_feed(self, feed):
         command = self.api.update_feed_command + [str(feed.feedId),
                                                   feed.userId]
-        self.logger.info('Running update command %s' % ' '.join(command))
+        self.logger.info('Running update command: %s' % ' '.join(command))
         check_output(command)
 
 

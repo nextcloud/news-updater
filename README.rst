@@ -233,12 +233,54 @@ varies from distribution to distribution, e.g in Debian and Ubuntu you would use
 If you are using the REST API, most of the time you can get away by using **nobody** as
 user, but again, that might vary depending on your distribution.
 
-Self Signed Certificates
-------------------------
+Trouble Shooting
+----------------
+If you are having trouble debugging updater errors, try running it again using the **info** loglevel::
 
-Should you use a self signed certificate over SSL, consider getting a free valid cert signed from:
+    owncloud-news-updater --loglevel info -c /path/to/config.ini
+
+How Do I Enable Support For Self-Signed Certificates
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+If you are using self-signed certificates, don't. It's very easy to sign your cert for free from either one of the following three websites:
 
 * `Lets Encrypt <https://letsencrypt.org/>`_
 * `StartSSL <https://www.startssl.com/>`_
 * `WoSign <https://www.wosign.com/english/>`_
 
+If you still have to use a self-signed certificate no matter what, don't patch the code to turn off certificate verification but rather globally add your certificate to the trusted certificates. Read up on your distributions documentation to find out how.
+
+Can I Run The Updater Using Cron
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Yes, you can by adding the **--testrun** parameter which will exit the program after one complete feed update.
+
+However it's **highly discouraged** since it's possible for more than updater to run in parallel if your cronjob runs too often or an update takes too long.
+
+This **can take down your system and/or server** since each new updater will slow down the previous ones causing more updaters to be spawned.
+
+The updater solves this issue by running in daemon mode (meaning it keeps updating until you stop or kill it). You can control the update frequency through the **--interval** parameter (or **interval** using a config file). The updater works in the following way:
+* If a full update takes longer than the passed interval, another update will be run immediately afterwards
+* If a full update took less than the passed interval, the updater will sleep for the remaining time and run an update afterwards
+
+
+Using The CLI Based Updater Fails
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The updater uses the PHP executable to run the occ file inside your owncloud directory. The general process boils down to the following::
+
+    # delete folders and feeds marked for deletion
+    $ php -f /home/bernhard/programming/core/occ news:updater:before-update
+
+    # get all feeds to udpate
+    $ php -f /home/bernhard/programming/core/occ news:updater:all-feeds
+
+    # run all feed updates
+    $ php -f /home/bernhard/programming/core/occ news:updater:update-feed FEED_ID USER_ID
+
+    # delete old articles
+    $ php -f /home/bernhard/programming/core/occ news:updater:after-update
+
+Most of the time there are two possible points of failure that can be debugged by using the **--logelevel info** parameter:
+* Most distributions uses different **php.ini** files for your command line and web-server. This can manifest itself in weird errors like not being able to connect to the database. The solution is to either adjust **php.ini** used for the CLI PHP or to use a different **php.ini** altogether by specifying the **--phpini** parameter, e.g.::
+
+    owncloud-news-updater -c /path/to/config --phpini /etc/php/owncloud-news-updater.ini
+
+* The **news:updater:all-feeds** command returns invalid JSON. This can be due to due broken or missing **php.ini** settings or PHP warnings/errors produced by ownCloud. The solution to this issue can range from adjusting your **php.ini** (see previous point) to manually patching ownCloud to remove the warnings from the output.

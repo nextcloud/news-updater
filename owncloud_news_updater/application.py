@@ -96,25 +96,11 @@ def main():
             exit(1)
 
         config_values = config['updater']
-        if 'user' in config_values:
-            args.user = config_values['user']
-        if 'password' in config_values:
-            args.password = config_values['password']
-        if 'testrun' in config_values:
-            args.testrun = config_values.getboolean('testrun')
-        if 'threads' in config_values:
-            args.threads = int(config_values['threads'])
-        if 'interval' in config_values:
-            args.interval = int(config_values['interval'])
-        if 'url' in config_values:
-            args.url = config_values['url']
-        if 'loglevel' in config_values:
-            args.loglevel = config_values['loglevel']
-        if 'phpini' in config_values:
-            args.phpini = config_values['phpini']
-        if 'apilevel' in config_values:
-            args.apilevel = config_values['apilevel']
-
+        valid_config_keys = ['user', 'password', 'threads', 'interval',
+                             'url', 'loglevel', 'phpini', 'apilevel']
+        for config_key in valid_config_keys:
+            if not hasattr(args, config_key):
+                setattr(args, config_key, config_values[config_key])
     if not args.url:
         _exit(parser, 'No url or directory given')
 

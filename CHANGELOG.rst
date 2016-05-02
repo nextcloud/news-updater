@@ -3,6 +3,13 @@
 Changelog
 ---------
 
+8.5.0
++++++
+
+**Improvements**
+
+- Command line parameters will now override config parameters in case both are present
+
 8.4.0
 +++++
 
