@@ -33,29 +33,24 @@ def main():
     parser.add_argument('--threads', '-t',
                         help='How many feeds should be fetched in parallel, '
                              'defaults to 10',
-                        default=10,
                         type=int)
     parser.add_argument('--timeout', '-s',
                         help='Maximum number of seconds for updating a feed, \
               defaults to 5 minutes',
-                        default=5 * 60,
                         type=int)
     parser.add_argument('--interval', '-i',
                         help='Update interval between fetching the next '
                              'round of updates in seconds, defaults to 15 '
                              'minutes. The update timespan will be '
                              'subtracted from the interval.',
-                        default=15 * 60,
                         type=int)
     parser.add_argument('--apilevel', '-a',
                         help='API level. Use v2 for News 9.0.0 or greater, '
                              'v1-2 for lower versions',
-                        default='v1-2',
                         choices=['v1-2', 'v2'])
     parser.add_argument('--loglevel', '-l',
                         help='Log granularity, info will log all urls and '
                              'received data, error will only log errors',
-                        default='error',
                         choices=['info', 'error'])
     parser.add_argument('--config', '-c',
                         help='Path to config file where all parameters '
@@ -96,11 +91,26 @@ def main():
             exit(1)
 
         ini_values = config['updater']
-        valid_ini_values = ['user', 'password', 'threads', 'interval',
-                            'url', 'loglevel', 'phpini', 'apilevel']
-        for ini_key in valid_ini_values:
+
+        # parse using proper data types
+        to_str = lambda section, key: section.get(key)
+        to_int = lambda section, key: int(section.get(key))
+        to_bool = lambda section, key: int(section.getboolean(key))
+
+        valid_ini_values = {
+            'user': to_str,
+            'password': to_str,
+            'threads': to_int,
+            'interval': to_int,
+            'url': to_str,
+            'loglevel': to_str,
+            'phpini': to_str,
+            'apilevel': to_str,
+            'testrun': to_bool
+        }
+        for ini_key, getter in valid_ini_values.items():
             if use_ini_param(args, ini_values, ini_key):
-                setattr(args, ini_key, ini_values[ini_key])
+                setattr(args, ini_key, getter(ini_values, ini_key))
     if not args.url:
         _exit(parser, 'No url or directory given')
 
@@ -120,6 +130,20 @@ def main():
     if not isWeb and not os.path.isdir(args.url):
         _exit(parser, '%s is not a directory' % args.url)
 
+    # fill args with defaults, necessary because there is no proper way to find
+    # out if it should be overwritten by a config setting
+    defaults = {
+        'loglevel': 'error',
+        'interval': 15 * 60,
+        'timeout': 5 * 60,
+        'apilevel': 'v1-2',
+        'threads': 10
+    }
+
+    for key, default in defaults.items():
+        if not getattr(args, key):
+            setattr(args, key, default)
+
     # create the updater and run the threads
     if isWeb:
         api = create_web_api(args.apilevel, args.url)
@@ -134,10 +158,8 @@ def main():
 
 
 def use_ini_param(args, ini_values, ini_key):
-    cli_param_missing = not hasattr(args, ini_key)
-    cli_param_none = getattr(args, ini_key) is None
-    ini_key_exists = ini_key in ini_values
-    return (cli_param_missing or cli_param_none) and ini_key_exists
+    return not getattr(args, ini_key) and ini_key in ini_values
+
 
 def _exit(parser, message):
     print(message, file=sys.stderr)

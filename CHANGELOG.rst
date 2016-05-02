@@ -10,6 +10,10 @@ Changelog
 
 - Command line parameters will now override config parameters in case both are present
 
+**Bugfixes**
+
+- Fix bug that would not parse integer and boolean values in config file properly
+
 8.4.0
 +++++
 
