@@ -264,7 +264,7 @@ The updater solves this issue by running in daemon mode (meaning it keeps updati
 
 Using The CLI Based Updater Fails
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The updater uses the PHP executable to run the occ file inside your owncloud directory. The general process boils down to the following::
+The updater uses the PHP executable to run the occ file inside your owncloud directory. The general process boils down to the following:
 
 .. code-block:: bash
 
