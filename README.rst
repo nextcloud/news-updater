@@ -283,6 +283,8 @@ The updater uses the PHP executable to run the occ file inside your owncloud dir
     php -f /home/bernhard/programming/core/occ news:updater:after-update
 
 Most of the time there are two possible points of failure that can be debugged by using the **--logelevel info** parameter:
+
+
 * Most distributions uses different **php.ini** files for your command line and web-server. This can manifest itself in weird errors like not being able to connect to the database. The solution is to either adjust **php.ini** used for the CLI PHP or to use a different **php.ini** altogether by specifying the **--phpini** parameter, e.g.::
 
     owncloud-news-updater -c /path/to/config --phpini /etc/php/owncloud-news-updater.ini
