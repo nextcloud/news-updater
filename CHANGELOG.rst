@@ -9,6 +9,7 @@ Changelog
 **Improvements**
 
 - Command line parameters will now override config parameters in case both are present
+- Remove **testrun** from allowed config parameters
 
 **Bugfixes**
 
