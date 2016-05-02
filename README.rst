@@ -269,19 +269,15 @@ The updater uses the PHP executable to run the occ file inside your owncloud dir
 .. code-block:: bash
 
     # delete folders and feeds marked for deletion
-
     php -f /home/bernhard/programming/core/occ news:updater:before-update
 
     # get all feeds to udpate
-
     php -f /home/bernhard/programming/core/occ news:updater:all-feeds
 
     # run all feed updates
-
     php -f /home/bernhard/programming/core/occ news:updater:update-feed FEED_ID USER_ID
 
     # delete old articles
-
     php -f /home/bernhard/programming/core/occ news:updater:after-update
 
 Most of the time there are two possible points of failure that can be debugged by using the **--logelevel info** parameter:
