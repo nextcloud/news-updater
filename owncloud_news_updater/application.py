@@ -110,8 +110,7 @@ def main():
             'url': to_str,
             'loglevel': to_str,
             'phpini': to_str,
-            'apilevel': to_str,
-            'testrun': to_bool
+            'apilevel': to_str
         }
         for ini_key, getter in valid_ini_values.items():
             if use_ini_param(args, ini_values, ini_key):
