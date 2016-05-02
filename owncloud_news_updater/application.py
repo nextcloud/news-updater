@@ -95,9 +95,11 @@ def main():
         # parse using proper data types
         def to_str(section, key):
             return section.get(key)
-        def to_int (section, key):
+
+        def to_int(section, key):
             return int(section.get(key))
-        def to_bool (section, key):
+
+        def to_bool(section, key):
             return int(section.getboolean(key))
 
         valid_ini_values = {
