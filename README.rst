@@ -20,6 +20,9 @@ control over updating feeds. This Python project implements an update
 mechanism that is based on the `updater REST API <https://github.com/owncloud/news/wiki/Updater-1.2>`_ or (new in ownCloud News 8.1.0) the
 console based update API.
 
+.. toctree::
+   :maxdepth: 2
+
 Dependencies
 ------------
 
@@ -233,7 +236,7 @@ varies from distribution to distribution, e.g in Debian and Ubuntu you would use
 If you are using the REST API, most of the time you can get away by using **nobody** as
 user, but again, that might vary depending on your distribution.
 
-Trouble Shooting
+Troubleshooting
 ----------------
 If you are having trouble debugging updater errors, try running it again using the **info** loglevel::
 
