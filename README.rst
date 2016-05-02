@@ -20,8 +20,7 @@ control over updating feeds. This Python project implements an update
 mechanism that is based on the `updater REST API <https://github.com/owncloud/news/wiki/Updater-1.2>`_ or (new in ownCloud News 8.1.0) the
 console based update API.
 
-.. toctree::
-   :maxdepth: 2
+.. contents:: :local:
 
 Dependencies
 ------------
