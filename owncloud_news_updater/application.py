@@ -5,11 +5,11 @@ once to speed up the update process. Built in cron has to be disabled in the
 news config, see the README.rst file in the top directory for more information.
 """
 import argparse
-import configparser
-import os
 import sys
 from platform import python_version
 
+from owncloud_news_updater.config import ConfigParser, Config, merge_configs, \
+    ConfigValidator
 from owncloud_news_updater.updaters.cli import CliUpdater, create_cli_api
 from owncloud_news_updater.updaters.web import WebUpdater, create_web_api
 from owncloud_news_updater.version import get_version
@@ -25,11 +25,8 @@ def main():
     if sys.version_info < (3, 2):
         print('Error: Python 3.2 required but found %s' % python_version())
         exit(1)
+
     parser = argparse.ArgumentParser()
-    parser.add_argument('--testrun',
-                        help='Run update only once, DO NOT use this in a '
-                             'cron job, only recommended for testing',
-                        action='store_true')
     parser.add_argument('--threads', '-t',
                         help='How many feeds should be fetched in parallel, '
                              'defaults to 10',
@@ -70,6 +67,11 @@ def main():
     parser.add_argument('--version', '-v', action='version',
                         version=get_version(),
                         help='Prints the updater\'s version')
+    parser.add_argument('--mode', '-m',
+                        help='Mode to run the updater in: endless runs the '
+                             'update again after the specified interval, '
+                             'singlerun only executes the update once',
+                        choices=['endless', 'singlerun'])
     parser.add_argument('url',
                         help='The URL or absolute path to the directory '
                              'where owncloud is installed. Must be specified '
@@ -83,92 +85,30 @@ def main():
 
     # read config file if given
     if args.config:
-        config = configparser.ConfigParser()
-        files = config.read(args.config)
+        config_parser = ConfigParser()
+        config = config_parser.parse_file(args.config)
+    else:
+        config = Config()
 
-        if len(files) <= 0:
-            print('Error: could not find config file %s' % args.config)
-            exit(1)
+    merge_configs(args, config)
 
-        ini_values = config['updater']
-
-        # parse using proper data types
-        def to_str(section, key):
-            return section.get(key)
-
-        def to_int(section, key):
-            return int(section.get(key))
-
-        def to_bool(section, key):
-            return int(section.getboolean(key))
-
-        valid_ini_values = {
-            'user': to_str,
-            'password': to_str,
-            'threads': to_int,
-            'interval': to_int,
-            'url': to_str,
-            'loglevel': to_str,
-            'phpini': to_str,
-            'apilevel': to_str
-        }
-        for ini_key, getter in valid_ini_values.items():
-            if use_ini_param(args, ini_values, ini_key):
-                setattr(args, ini_key, getter(ini_values, ini_key))
-    if not args.url:
-        _exit(parser, 'No url or directory given')
-
-    # if url starts with a /, the console based API will be used
-    isWeb = args.url.startswith('http://') or args.url.startswith('https://')
-
-    # url and user must be specified either from the command line or in the
-    # config file
-    if isWeb and not args.user:
-        _exit(parser, 'Web API requires a user')
-
-    if not isWeb and not os.path.isabs(args.url):
-        _exit(parser,
-              ('Absolute path to ownCloud installation required, given '
-               '%s') % args.url)
-
-    if not isWeb and not os.path.isdir(args.url):
-        _exit(parser, '%s is not a directory' % args.url)
-
-    # fill args with defaults, necessary because there is no proper way to find
-    # out if it should be overwritten by a config setting
-    defaults = {
-        'loglevel': 'error',
-        'interval': 15 * 60,
-        'timeout': 5 * 60,
-        'apilevel': 'v1-2',
-        'threads': 10
-    }
-
-    for key, default in defaults.items():
-        if not getattr(args, key):
-            setattr(args, key, default)
+    validator = ConfigValidator()
+    validation_result = validator.validate(config)
+    if len(validation_result) > 0:
+        for message in validation_result:
+            print('Error: %s' % message, file=sys.stderr)
+        print()
+        parser.print_help(sys.stderr)
+        exit(1)
 
     # create the updater and run the threads
-    if isWeb:
-        api = create_web_api(args.apilevel, args.url)
-        updater = WebUpdater(args.threads, args.interval, args.testrun,
-                             args.loglevel, args.timeout, api, args.user,
-                             args.password)
+    if config.is_web():
+        api = create_web_api(config.apilevel, config.url)
+        updater = WebUpdater(config, api)
     else:
-        api = create_cli_api(args.apilevel, args.url, args.phpini)
-        updater = CliUpdater(args.threads, args.interval, args.testrun,
-                             args.loglevel, api)
+        api = create_cli_api(config.apilevel, config.url, config.phpini)
+        updater = CliUpdater(config, api)
     updater.run()
-
-
-def use_ini_param(args, ini_values, ini_key):
-    return not getattr(args, ini_key) and ini_key in ini_values
-
-
-def _exit(parser, message):
-    print(message, file=sys.stderr)
-    parser.print_help()
-    exit(1)
 
 
 if __name__ == '__main__':

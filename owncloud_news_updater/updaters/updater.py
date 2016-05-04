@@ -11,27 +11,26 @@ class Updater:
     threading and the general workflow
     """
 
-    def __init__(self, thread_num, interval, run_once, log_level):
-        self.thread_num = thread_num
-        self.run_once = run_once
-        self.interval = interval
+    def __init__(self, config):
+        self.config = config
         # logging
         format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
         logging.basicConfig(format=format)
         self.logger = logging.getLogger('ownCloud News Updater')
-        if log_level == 'info':
+        if self.config.loglevel == 'info':
             self.logger.setLevel(logging.INFO)
         else:
             self.logger.setLevel(logging.ERROR)
 
     def run(self):
-        if self.run_once:
+        single_run = self.config.mode == 'singlerun'
+        if single_run:
             self.logger.info('Running update once with %d threads' %
-                             self.thread_num)
+                             self.config.threads)
         else:
             self.logger.info(('Running update in an interval of %d seconds '
-                              'using %d threads') % (self.interval,
-                                                     self.thread_num))
+                              'using %d threads') % (self.config.interval,
+                                                     self.config.threads))
         while True:
             self.start_time = time.time()  # reset clock
             try:
@@ -39,7 +38,7 @@ class Updater:
                 feeds = self.all_feeds()
 
                 threads = []
-                for num in range(0, self.thread_num):
+                for num in range(0, self.config.threads):
                     thread = self.start_update_thread(feeds)
                     thread.start()
                     threads.append(thread)
@@ -48,12 +47,12 @@ class Updater:
 
                 self.after_update()
 
-                if self.run_once:
+                if single_run:
                     return
                 # wait until the interval finished to run again and subtract
                 # the update run time from the interval
                 update_duration_seconds = int((time.time() - self.start_time))
-                timeout = self.interval - update_duration_seconds
+                timeout = self.config.interval - update_duration_seconds
                 if timeout > 0:
                     self.logger.info(('Finished updating in %d seconds, '
                                       'next update in %d seconds') %

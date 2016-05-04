@@ -19,12 +19,10 @@ def http_get(url, auth, timeout=5 * 60):
 
 
 class WebUpdater(Updater):
-    def __init__(self, thread_num, interval, run_once, log_level, timeout, api,
-                 user, password):
-        super().__init__(thread_num, interval, run_once, log_level)
+    def __init__(self, config, api):
+        super().__init__(config)
         self.api = api
-        self.auth = (user, password)
-        self.timeout = timeout
+        self.auth = (config.user, config.password)
 
     def before_update(self):
         self.logger.info(
@@ -33,7 +31,7 @@ class WebUpdater(Updater):
 
     def start_update_thread(self, feeds):
         return WebUpdateThread(feeds, self.logger, self.api,
-                               self.auth, self.timeout)
+                               self.auth, self.config.timeout)
 
     def all_feeds(self):
         feeds_json = http_get(self.api.all_feeds_url, auth=self.auth)

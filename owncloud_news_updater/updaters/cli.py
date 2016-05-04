@@ -5,8 +5,8 @@ from owncloud_news_updater.updaters.updater import Updater, UpdateThread
 
 
 class CliUpdater(Updater):
-    def __init__(self, thread_num, interval, run_once, log_level, api):
-        super().__init__(thread_num, interval, run_once, log_level)
+    def __init__(self, config, api):
+        super().__init__(config)
         self.api = api
 
     def before_update(self):

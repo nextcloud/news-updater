@@ -182,6 +182,7 @@ You can also put your settings in a config file, looking like this:
     url = /path/to/owncloud  # or https://domain.com/owncloud when using the REST API
     phpini = /path/to/custom/php.ini
     apilevel = v1-2  # or v2 for News 9.0.0 or greater
+    mode = endless
 
 Then run the updater with::
 
