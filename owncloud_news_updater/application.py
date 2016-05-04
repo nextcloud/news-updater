@@ -8,7 +8,7 @@ import sys
 from platform import python_version
 
 from owncloud_news_updater.container import Container
-from owncloud_news_updater.updaters.updater import Updater
+from owncloud_news_updater.api.updater import Updater
 
 __author__ = 'Bernhard Posselt'
 __copyright__ = 'Copyright 2012-2016, Bernhard Posselt'

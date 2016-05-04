@@ -1,22 +1,22 @@
 import sys
 
-from owncloud_news_updater.argumentparser import ArgumentParser
+from owncloud_news_updater.common.argumentparser import ArgumentParser
+from owncloud_news_updater.api.cli import CliUpdater, Cli, CliApi, \
+    create_cli_api
+from owncloud_news_updater.api.updater import Updater
+from owncloud_news_updater.api.web import create_web_api, WebApi, \
+    WebUpdater, HttpClient
+from owncloud_news_updater.common.logger import Logger
 from owncloud_news_updater.config import ConfigParser, ConfigValidator, \
     Config, merge_configs
 from owncloud_news_updater.dependencyinjection.container import BaseContainer
-from owncloud_news_updater.logger import Logger
-from owncloud_news_updater.updaters.cli import CliUpdater, Cli, CliApi, \
-    create_cli_api
-from owncloud_news_updater.updaters.updater import Updater
-from owncloud_news_updater.updaters.web import create_web_api, WebApi, \
-    WebUpdater, HttpClient
 
 
 class Container(BaseContainer):
     def __init__(self):
         super().__init__()
         self.set(ArgumentParser, lambda c: ArgumentParser())
-        self.set(Config, lambda c: self._create_config(c))
+        self.set(Config, self._create_config)
         self.set(ConfigParser, lambda c: ConfigParser())
         self.set(ConfigValidator, lambda c: ConfigValidator())
         self.set(Logger, lambda c: Logger(c.get(Config)))
@@ -29,7 +29,7 @@ class Container(BaseContainer):
                                                   c.get(HttpClient)))
         self.set(CliApi, lambda c: create_cli_api(c.get(Config)))
         self.set(WebApi, lambda c: create_web_api(c.get(Config)))
-        self.set(Updater, lambda c: self._create_updater(c))
+        self.set(Updater, self._create_updater)
 
     def _create_updater(self, container):
         if container.get(Config).is_web():

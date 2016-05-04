@@ -1,7 +1,7 @@
 from subprocess import check_output
 
-from owncloud_news_updater.updaters.api import Api, Feed
-from owncloud_news_updater.updaters.updater import Updater, UpdateThread
+from owncloud_news_updater.api.api import Api, Feed
+from owncloud_news_updater.api.updater import Updater, UpdateThread
 
 
 class Cli:
