@@ -21,6 +21,7 @@ def main():
     if sys.version_info < (3, 2):
         print('Error: Python 3.2 required but found %s' % python_version())
         exit(1)
+        
     container = Container()
     container.get(Updater).run()
 
