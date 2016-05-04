@@ -3,6 +3,17 @@
 Changelog
 ---------
 
+9.0.0
++++++
+
+**Breaking Changes**
+* Config files are now validated. Unknown config keys will throw an error and abort the updater
+* The **--testrun** command line argument was removed. Instead use **--mode singlerun**
+
+**Improvements**
+* Added a **--mode** parameter which allows you to run the updater using a cron. You have to ensure that only one instance run at a time however (e.g. using SystemD timers)
+
+
 8.5.0
 +++++
 
