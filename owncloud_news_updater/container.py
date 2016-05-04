@@ -2,8 +2,7 @@ import sys
 
 from owncloud_news_updater.argumentparser import ArgumentParser
 from owncloud_news_updater.config import ConfigParser, ConfigValidator, \
-    Config, \
-    merge_configs
+    Config, merge_configs
 from owncloud_news_updater.dependencyinjection.container import BaseContainer
 from owncloud_news_updater.logger import Logger
 from owncloud_news_updater.updaters.cli import CliUpdater, Cli, CliApi, \
