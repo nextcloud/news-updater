@@ -3,8 +3,8 @@ import logging
 
 class Logger:
     def __init__(self, config):
-        format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-        logging.basicConfig(format=format)
+        log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        logging.basicConfig(format=log_format)
         self.logger = logging.getLogger('ownCloud News Updater')
         if config.loglevel == 'info':
             self.logger.setLevel(logging.INFO)

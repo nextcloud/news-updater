@@ -6,9 +6,9 @@ class Feed:
     Payload object for update infos
     """
 
-    def __init__(self, feedId, userId):
-        self.feedId = feedId
-        self.userId = userId
+    def __init__(self, feed_id, user_id):
+        self.feed_id = feed_id
+        self.user_id = user_id
 
 
 class Api:

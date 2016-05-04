@@ -1,8 +1,7 @@
 import sys
-import traceback
 import threading
 import time
-import logging
+import traceback
 
 
 class Updater:
@@ -25,7 +24,7 @@ class Updater:
                               'using %d threads') % (self.config.interval,
                                                      self.config.threads))
         while True:
-            self.start_time = time.time()  # reset clock
+            start_time = time.time()  # reset clock
             try:
                 self.before_update()
                 feeds = self.all_feeds()
@@ -44,14 +43,14 @@ class Updater:
                     return
                 # wait until the interval finished to run again and subtract
                 # the update run time from the interval
-                update_duration_seconds = int((time.time() - self.start_time))
+                update_duration_seconds = int((time.time() - start_time))
                 timeout = self.config.interval - update_duration_seconds
                 if timeout > 0:
                     self.logger.info(('Finished updating in %d seconds, '
                                       'next update in %d seconds') %
                                      (update_duration_seconds, timeout))
                     time.sleep(timeout)
-            except (Exception) as e:
+            except Exception as e:
                 self.logger.error('%s: Trying again in 30 seconds' % e)
                 traceback.print_exc(file=sys.stderr)
                 time.sleep(30)
@@ -90,15 +89,15 @@ class UpdateThread(threading.Thread):
                     return
             try:
                 self.logger.info('Updating feed with id %s and user %s' %
-                                 (feed.feedId, feed.userId))
+                                 (feed.feed_id, feed.user_id))
                 self.update_feed(feed)
-            except (Exception) as e:
+            except Exception as e:
                 self.logger.error(e)
                 traceback.print_exc(file=sys.stderr)
 
     def update_feed(self, feed):
         """
         Updates a single feed
-        feed: the feed object containing the feedId and userId
+        feed: the feed object containing the feed_id and user_id
         """
         raise NotImplementedError

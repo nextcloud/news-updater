@@ -91,17 +91,17 @@ class ConfigParser:
                 msg = 'Error: unknown config key with name "%s"' % key
                 raise InvalidConfigKeyException(msg)
 
-        for key, type in Config.config_keys.items():
+        for key, type_enum in Config.config_keys.items():
             if key in contents:
-                value = self._parse_ini_value(type, contents, key)
+                value = self._parse_ini_value(type_enum, contents, key)
                 setattr(config, key, value)
 
         return config
 
-    def _parse_ini_value(self, type, contents, key):
-        if type == Types.integer:
+    def _parse_ini_value(self, type_enum, contents, key):
+        if type_enum == Types.integer:
             return int(contents.get(key))
-        elif type == Types.boolean:
+        elif type_enum == Types.boolean:
             return contents.getboolean(key)
         else:
             return contents.get(key)
@@ -115,6 +115,6 @@ def merge_configs(args, config):
     :argument args the argument parser arguments
     :argument config the config
     """
-    for key, type in Config.config_keys.items():
+    for key, type_enum in Config.config_keys.items():
         if hasattr(args, key) and getattr(args, key):
             setattr(config, key, getattr(args, key))

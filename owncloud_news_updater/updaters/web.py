@@ -56,8 +56,8 @@ class WebUpdateThread(UpdateThread):
 
     def update_feed(self, feed):
         data = {
-            'feedId': feed.feedId,
-            'userId': feed.userId
+            'feedId': feed.feed_id,
+            'userId': feed.user_id
         }
         data = urllib.parse.urlencode(data)
         url = '%s?%s' % (self.api.update_url, data)

@@ -6,7 +6,7 @@ ownCloud News Updater
 .. image:: https://travis-ci.org/owncloud/news-updater.svg?branch=master
     :target: https://travis-ci.org/owncloud/news-updater
 
-This Python library is a parllel feed updater for the `ownCloud News app <https://github.com/owncloud/news>`_
+This Python library is a parallel feed updater for the `ownCloud News app <https://github.com/owncloud/news>`_
 
 ownCloud does not require people to install threading or multiprocessing
 libraries. Because the feed update process is mainly limited by I/O, parallel
@@ -55,8 +55,7 @@ Since 8.2 the package is available on pypi for installation via pip (the
 Python library package manager).
 
 To install pip on your distribution of choice, `consolidate the pip
-documentation <http://python-packaging-user-guide.readthedocs
-.org/en/latest/install_requirements_linux/>`_
+documentation <http://python-packaging-user-guide.readthedocs.org/en/latest/install_requirements_linux/>`_
 
 **Note**: You need to install the Python 3 version of pip
 
@@ -221,7 +220,7 @@ Then to enable and start it run::
     sudo systemctl start owncloud-news-updater.service
 
 **Note**: If you are using the cli based updater (as in set an absolute directory as url)
-you need to set the webserver user as user in the unit file. Otherwise the command
+you need to set the web-server user as user in the unit file. Otherwise the command
 will fail because ownCloud checks for the owner of its files. This user
 varies from distribution to distribution, e.g in Debian and Ubuntu you would use the
 **www-data** user:
