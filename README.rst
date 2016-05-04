@@ -116,11 +116,11 @@ You can view all options by running::
 
 ::
 
-    usage: owncloud-news-updater [-h] [--testrun] [--threads THREADS] [--timeout TIMEOUT]
+    usage: owncloud-news-updater [-h] [--threads THREADS] [--timeout TIMEOUT]
                        [--interval INTERVAL] [--apilevel {v1-2,v2}]
                        [--loglevel {info,error}] [--config CONFIG]
                        [--phpini PHPINI] [--user USER] [--password PASSWORD]
-                       [--version]
+                       [--version] [--mode {endless,singlerun}]
                        [url]
 
     positional arguments:
@@ -133,8 +133,6 @@ You can view all options by running::
 
     optional arguments:
       -h, --help            show this help message and exit
-      --testrun             Run update only once, DO NOT use this in a cron job,
-                            only recommended for testing
       --threads THREADS, -t THREADS
                             How many feeds should be fetched in parallel, defaults
                             to 10
@@ -156,9 +154,9 @@ You can view all options by running::
                             defined as key values pair. An example is in
                             bin/example_config.ini
       --phpini PHPINI, -P PHPINI
-                            Custom absolute path to the php.ini file to use for the
-                            command line updater. If omitted, the default one will
-                            be used
+                            Custom absolute path to the php.ini file to use for
+                            the command line updater. If omitted, the default one
+                            will be used
       --user USER, -u USER  Admin username to log into ownCloud. Must be specified
                             on the command line or in the config file if the
                             updater should update over HTTP
@@ -166,6 +164,11 @@ You can view all options by running::
                             Admin password to log into ownCloud if the updater
                             should update over HTTP
       --version, -v         Prints the updater's version
+      --mode {endless,singlerun}, -m {endless,singlerun}
+                            Mode to run the updater in: endless runs the update
+                            again after the specified interval, singlerun only
+                            executes the update once
+
 
 
 
