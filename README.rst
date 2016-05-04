@@ -194,7 +194,7 @@ Then run the updater with::
 
 **Note**: Command line parameters will always overwrite config parameters, so if you just want to change your loglevel to info for one run you can now do the following without globally changing the config file::
 
-    owncloud-news-updater -c /path/to/config --testrun --loglevel info
+    owncloud-news-updater -c /path/to/config --mode singlerun --loglevel info
 
 Running The Updater As Systemd Service
 --------------------------------------
