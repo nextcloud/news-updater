@@ -11,16 +11,9 @@ class Updater:
     threading and the general workflow
     """
 
-    def __init__(self, config):
+    def __init__(self, config, logger):
+        self.logger = logger
         self.config = config
-        # logging
-        format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-        logging.basicConfig(format=format)
-        self.logger = logging.getLogger('ownCloud News Updater')
-        if self.config.loglevel == 'info':
-            self.logger.setLevel(logging.INFO)
-        else:
-            self.logger.setLevel(logging.ERROR)
 
     def run(self):
         single_run = self.config.mode == 'singlerun'
