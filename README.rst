@@ -176,15 +176,21 @@ You can also put your settings in a config file, looking like this:
 .. code:: ini
 
     [updater]
-    user = admin  # only needed when using the REST API
-    password = admin  # only needed when using the REST API
+    # only needed when using the REST API
+    user = admin
+    # only needed when using the REST API
+    password = admin
     threads = 10
     interval = 900
     loglevel = error
-    url = /path/to/owncloud  # or https://domain.com/owncloud when using the REST API
+    # or https://domain.com/owncloud when using the REST API
+    url = /path/to/owncloud
     phpini = /path/to/custom/php.ini
-    apilevel = v1-2  # or v2 for News 9.0.0 or greater
+    # or v2 for News 9.0.0 or greater
+    apilevel = v1-2
     mode = endless
+
+**Note**: You can omit options in the config file if you want to use the defaults, but you can not have more than the allowed parameters present, otherwise an exception will abort the updater.
 
 Then run the updater with::
 
