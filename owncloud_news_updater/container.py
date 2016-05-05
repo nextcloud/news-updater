@@ -19,7 +19,6 @@ class Container(BaseContainer):
         self.register(Updater, self._create_updater)
         self.register(Config, self._create_config)
 
-
     def _create_updater(self, container):
         if container.resolve(Config).is_web():
             return container.resolve(WebUpdater)
