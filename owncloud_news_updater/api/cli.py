@@ -2,6 +2,8 @@ from subprocess import check_output
 
 from owncloud_news_updater.api.api import Api, Feed
 from owncloud_news_updater.api.updater import Updater, UpdateThread
+from owncloud_news_updater.common.logger import Logger
+from owncloud_news_updater.config import Config
 
 
 class Cli:
@@ -9,8 +11,40 @@ class Cli:
         return check_output(commands)
 
 
+class CliApi(Api):
+    def __init__(self, config):
+        directory = config.url
+        phpini = config.phpini
+        self.directory = directory.rstrip('/')
+        base_command = ['php', '-f', self.directory + '/occ']
+        if phpini is not None and phpini.strip() != '':
+            base_command += ['-c', phpini]
+        self.before_cleanup_command = base_command + [
+            'news:updater:before-update']
+        self.all_feeds_command = base_command + ['news:updater:all-feeds']
+        self.update_feed_command = base_command + ['news:updater:update-feed']
+        self.after_cleanup_command = base_command + [
+            'news:updater:after-update']
+
+
+class CliApiV2(CliApi):
+    def __init__(self, config):
+        super().__init__(config)
+
+    def _parse_json(self, feed_json):
+        feed_json = feed_json['data']['updater']
+        return [Feed(info['feedId'], info['userId']) for info in feed_json]
+
+
+def create_cli_api(config):
+    if config.apilevel == 'v1-2':
+        return CliApi(config)
+    if config.apilevel == 'v2':
+        return CliApiV2(config)
+
+
 class CliUpdater(Updater):
-    def __init__(self, config, logger, api, cli):
+    def __init__(self, config: Config, logger: Logger, api: CliApi, cli: Cli):
         super().__init__(config, logger)
         self.cli = cli
         self.api = api
@@ -49,35 +83,3 @@ class CliUpdateThread(UpdateThread):
                                                   feed.user_id]
         self.logger.info('Running update command: %s' % ' '.join(command))
         self.cli.run(command)
-
-
-class CliApi(Api):
-    def __init__(self, config):
-        directory = config.url
-        phpini = config.phpini
-        self.directory = directory.rstrip('/')
-        base_command = ['php', '-f', self.directory + '/occ']
-        if phpini is not None and phpini.strip() != '':
-            base_command += ['-c', phpini]
-        self.before_cleanup_command = base_command + [
-            'news:updater:before-update']
-        self.all_feeds_command = base_command + ['news:updater:all-feeds']
-        self.update_feed_command = base_command + ['news:updater:update-feed']
-        self.after_cleanup_command = base_command + [
-            'news:updater:after-update']
-
-
-class CliApiV2(CliApi):
-    def __init__(self, config):
-        super().__init__(config)
-
-    def _parse_json(self, feed_json):
-        feed_json = feed_json['data']['updater']
-        return [Feed(info['feedId'], info['userId']) for info in feed_json]
-
-
-def create_cli_api(config):
-    if config.apilevel == 'v1-2':
-        return CliApi(config)
-    if config.apilevel == 'v2':
-        return CliApiV2(config)

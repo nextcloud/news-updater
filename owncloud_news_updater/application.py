@@ -23,7 +23,7 @@ def main():
         exit(1)
 
     container = Container()
-    container.get(Updater).run()
+    container.resolve(Updater).run()
 
 
 if __name__ == '__main__':
