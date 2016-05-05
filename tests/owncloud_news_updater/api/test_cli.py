@@ -14,6 +14,7 @@ class TestCli(TestCase):
         self.cli = MagicMock(spec=Cli)
         self.container.register(Cli, lambda c: self.cli)
         self.base_url = '/'
+        self.phpini = '/path/to/ini'
 
     def _set_config(self, **kwargs):
         config = Config()
@@ -35,8 +36,12 @@ class TestCli(TestCase):
         api = self.container.resolve(CliApi)
         self.assertIsInstance(api, CliApiV2)
 
-    def _create_commands(self):
-        base_cmd = ['php', '-f', '%socc' % self.base_url]
+    def _create_commands(self, phpini_path=None):
+        if phpini_path:
+            phpini_cmd = ['-c', phpini_path]
+        else:
+            phpini_cmd = []
+        base_cmd = ['php', '-f', '%socc' % self.base_url] + phpini_cmd
         before_cmd = base_cmd + ['news:updater:before-update']
         feeds_cmd = base_cmd + ['news:updater:all-feeds']
         update_cmd1 = base_cmd + ['news:updater:update-feed', '2', 'deb']
@@ -70,3 +75,29 @@ class TestCli(TestCase):
         updater.run()
 
         self.assertIn(self.cli.run.call_args_list, self._create_commands())
+
+    def test_api_v2_calls_phpini(self):
+        self._set_config(apilevel='v2', url=self.base_url, mode='singlerun',
+                         phpini=self.phpini)
+        updater = self.container.resolve(Updater)
+        self._set_cli_run({
+            'data': {
+                'updater': [{'feedId': 3, 'userId': 'john'},
+                            {'feedId': 2, 'userId': 'deb'}]
+            }
+        })
+        updater.run()
+
+        self.assertIn(self.cli.run.call_args_list,
+                      self._create_commands(self.phpini))
+
+    def test_api_v1_calls_phpini(self):
+        self._set_config(apilevel='v1-2', url=self.base_url, mode='singlerun',
+                         phpini=self.phpini)
+        updater = self.container.resolve(Updater)
+        self._set_cli_run({
+            'feeds': [{'id': 3, 'userId': 'john'}, {'id': 2, 'userId': 'deb'}]
+        })
+        updater.run()
+        self.assertIn(self.cli.run.call_args_list,
+                      self._create_commands(self.phpini))

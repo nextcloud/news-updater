@@ -73,6 +73,9 @@ class ConfigValidator:
         if config.apilevel not in ['v1-2', 'v2']:
             result += ['Unknown apilevel: %s' % config.apilevel]
 
+        if config.phpini and not os.path.isabs(config.phpini):
+            result += ['Path to php.ini must be absolute']
+
         return result
 
 

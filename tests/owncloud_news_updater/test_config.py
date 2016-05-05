@@ -1,8 +1,11 @@
 from unittest import TestCase
 from configparser import MissingSectionHeaderError
 
+from owncloud_news_updater.common.argumentparser import ArgumentParser
 from owncloud_news_updater.config import InvalidConfigException, \
-    ConfigParser, merge_configs, ConfigValidator, InvalidConfigKeyException
+    ConfigParser, merge_configs, ConfigValidator, InvalidConfigKeyException, \
+    Config
+from owncloud_news_updater.container import Container
 from tests.owncloud_news_updater import find_test_config, assert_raises
 
 
@@ -10,11 +13,19 @@ class Args:
     def __init__(self):
         self.user = 'john'
         self.threads = 100
+        self.config = None
+
+    def parse(self):
+        return self
+
+    def print_help(self, file):
+        pass
 
 
 class TestConfig(TestCase):
     def setUp(self):
         self.parser = ConfigParser()
+        self.container = Container()
 
     def test_parse_full(self):
         config = self.parser.parse_file(find_test_config('full.ini'))
@@ -102,6 +113,13 @@ class TestConfig(TestCase):
         result = validator.validate(config)
         self.assertListEqual(['Unknown loglevel: debug'], result)
 
+    def test_validate_invalid_phpini(self):
+        config = self.parser.parse_file(find_test_config('full.ini'))
+        config.phpini = 'php.ini'
+        validator = ConfigValidator()
+        result = validator.validate(config)
+        self.assertListEqual(['Path to php.ini must be absolute'], result)
+
     def test_validate_ok(self):
         config = self.parser.parse_file(find_test_config('full.ini'))
         validator = ConfigValidator()
@@ -119,3 +137,18 @@ class TestConfig(TestCase):
     @assert_raises(InvalidConfigKeyException)
     def test_load_fails(self):
         self.parser.parse_file(find_test_config('unknown_key.ini'))
+
+    def test_integration_merge(self):
+        args = Args()
+        args.config = find_test_config('full.ini')
+        self.container.register(ArgumentParser, lambda c: args)
+        config = self.container.resolve(Config)
+        self.assertEqual(config.user, 'john')
+        self.assertEqual(config.password, 'pass')
+        self.assertEqual(config.threads, 100)
+        self.assertEqual(config.interval, 9)
+        self.assertEqual(config.loglevel, 'info')
+        self.assertEqual(config.url, '/')
+        self.assertEqual(config.phpini, '/path/to/custom/php.ini')
+        self.assertEqual(config.apilevel, 'v2')
+        self.assertEqual(config.mode, 'singlerun')
