@@ -7,12 +7,17 @@ Changelog
 +++++
 
 **Breaking Changes**
+* Require Python 3.4 or later
 * Config files are now validated. Unknown config keys will throw an error and abort the updater
 * The **--testrun** command line argument was removed. Instead use **--mode singlerun**
 
+**Bugfixes**
+
+- Fix bug that would exit update in singlerun mode when an error occurred during update
+
 **Improvements**
 * Added a **--mode** parameter which allows you to run the updater using a cron. You have to ensure that only one instance run at a time however (e.g. using SystemD timers)
-
+* Add unit tests
 
 8.5.0
 +++++

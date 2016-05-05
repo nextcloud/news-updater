@@ -25,7 +25,7 @@ console based update API.
 Dependencies
 ------------
 
-* **Python >=3.2**
+* **Python >=3.4**
 
 
 Pre-Installation

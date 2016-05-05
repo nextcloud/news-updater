@@ -53,7 +53,10 @@ class Updater:
             except Exception as e:
                 self.logger.error('%s: Trying again in 30 seconds' % e)
                 traceback.print_exc(file=sys.stderr)
-                time.sleep(30)
+                if single_run:
+                    return
+                else:
+                    time.sleep(30)
 
     def before_update(self):
         raise NotImplementedError

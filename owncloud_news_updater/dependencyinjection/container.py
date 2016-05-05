@@ -2,10 +2,6 @@ class ResolveException(Exception):
     pass
 
 
-class AlreadyRegisteredException(Exception):
-    pass
-
-
 class Factory:
     """
     Wrapper for non shared factories
@@ -48,14 +44,10 @@ class Container:
         is requested again. If False requesting the same key will always return
         a new instance. Autoresolved classes will always be shared
         """
-        if key in self._factories:
-            msg = 'Factory already registered for key %s' % key
-            raise AlreadyRegisteredException(msg)
+        if shared:
+            self._factories[key] = SingletonFactory(factory)
         else:
-            if shared:
-                self._factories[key] = SingletonFactory(factory)
-            else:
-                self._factories[key] = Factory(factory)
+            self._factories[key] = Factory(factory)
 
     def resolve(self, key):
         """

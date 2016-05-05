@@ -17,37 +17,36 @@ class C:
         self.param = param
 
 
-class ContainerTest(TestCase):
+class TestContainer(TestCase):
+    def setUp(self):
+        self.container = Container()
+
     def test_register(self):
-        container = Container()
-        container.register(A, lambda c: 'swapped out')
-        self.assertEqual('swapped out', container.resolve(B).param)
+        self.container.register(A, lambda c: 'swapped out')
+        self.assertEqual('swapped out', self.container.resolve(B).param)
 
     def test_resolve(self):
-        container = Container()
-        a = container.resolve(A)
+        a = self.container.resolve(A)
         self.assertIsInstance(a, A)
 
-        b = container.resolve(B)
+        b = self.container.resolve(B)
         self.assertIsInstance(b, B)
         self.assertIsInstance(b.param, A)
 
     def test_resolve_shared(self):
-        container = Container()
-        container.register(A, lambda c: A(), False)
+        self.container.register(A, lambda c: A(), False)
 
-        a1 = container.resolve(A)
-        a2 = container.resolve(A)
+        a1 = self.container.resolve(A)
+        a2 = self.container.resolve(A)
         self.assertIsInstance(a1, A)
         self.assertIsInstance(a2, A)
         self.assertNotEqual(a1, a2)
 
     def test_alias(self):
-        container = Container()
-        container.alias(A, B)
-        a = container.resolve(B)
+        self.container.alias(A, B)
+        a = self.container.resolve(B)
         self.assertIsInstance(a, A)
 
-        c = container.resolve(C)
+        c = self.container.resolve(C)
         self.assertIsInstance(c, C)
         self.assertIsInstance(c.param, A)

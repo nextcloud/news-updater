@@ -1,4 +1,4 @@
-import unittest
+from unittest import TestCase
 from configparser import MissingSectionHeaderError
 
 from owncloud_news_updater.config import InvalidConfigException, \
@@ -12,7 +12,7 @@ class Args:
         self.threads = 100
 
 
-class ConfigTest(unittest.TestCase):
+class TestConfig(TestCase):
     def setUp(self):
         self.parser = ConfigParser()
 
