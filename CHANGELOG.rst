@@ -20,7 +20,7 @@ Changelog
 **Improvements**
 
 * Added a **--mode** parameter which allows you to run the updater using a cron. You have to ensure that only one instance run at a time however (e.g. using SystemD timers)
-* Add unit tests
+* Added automated tests which cover the full functionality
 
 8.5.0
 +++++
