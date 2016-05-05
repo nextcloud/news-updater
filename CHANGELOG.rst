@@ -7,6 +7,7 @@ Changelog
 +++++
 
 **Breaking Changes**
+
 * Require Python 3.4 or later
 * Config files are now validated. Unknown config keys will throw an error and abort the updater
 * The **--testrun** command line argument was removed. Instead use **--mode singlerun**
