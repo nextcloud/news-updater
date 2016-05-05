@@ -8,9 +8,9 @@ Changelog
 
 **Breaking Changes**
 
-* Require Python 3.4 or later
+* Require Python 3.4 or greater
 * Config files are now validated. Unknown config keys will throw an error and abort the updater
-* The **--testrun** command line argument was removed. Instead use **--mode singlerun**
+* The **--testrun** command line argument was removed in order to officially support starting the updater using your cron. Use **--mode singlerun** instead
 
 **Bugfixes**
 
