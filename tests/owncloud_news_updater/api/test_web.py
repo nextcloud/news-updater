@@ -35,15 +35,7 @@ class TestWeb(TestCase):
         api = self.container.resolve(WebApi)
         self.assertIsInstance(api, WebApiV2)
 
-    def test_api_v1_calls(self):
-        self._set_config(apilevel='v1-2', url=self.base_url, user='john',
-                         password='pass', mode='singlerun')
-        updater = self.container.resolve(Updater)
-        self._set_http_get({
-            'feeds': [{'id': 3, 'userId': 'john'}, {'id': 2, 'userId': 'deb'}]
-        })
-        updater.run()
-
+    def _create_urls_v1(self):
         before_url = '%s/index.php/apps/news/api/v1-2/cleanup/before-update' \
                      % self.base_url
         feeds_url = '%s/index.php/apps/news/api/v1-2/feeds/all' \
@@ -57,25 +49,15 @@ class TestWeb(TestCase):
         auth = ('john', 'pass')
         timeout = 5 * 60
 
-        asserted_calls = [call(before_url, auth), call(feeds_url, auth),
-                          call(update_url1, auth, timeout),
-                          call(update_url2, auth, timeout),
-                          call(after_url, auth)]
+        # ordering can be switched due to threading, so try both cases
+        return ([call(before_url, auth), call(feeds_url, auth),
+                 call(update_url1, auth, timeout),
+                 call(update_url2, auth, timeout), call(after_url, auth)],
+                [call(before_url, auth), call(feeds_url, auth),
+                 call(update_url2, auth, timeout),
+                 call(update_url1, auth, timeout), call(after_url, auth)])
 
-        self.http.get.assert_has_calls(asserted_calls)
-
-    def test_api_v2_calls(self):
-        self._set_config(apilevel='v2', url=self.base_url, user='john',
-                         password='pass', mode='singlerun')
-        updater = self.container.resolve(Updater)
-        self._set_http_get({
-            'data': {
-                'updater': [{'feedId': 3, 'userId': 'john'},
-                            {'feedId': 2, 'userId': 'deb'}]
-            }
-        })
-        updater.run()
-
+    def _create_urls_v2(self):
         before_url = '%s/index.php/apps/news/api/v2/updater/before-update' \
                      % self.base_url
         feeds_url = '%s/index.php/apps/news/api/v2/updater/all-feeds' \
@@ -89,9 +71,33 @@ class TestWeb(TestCase):
         auth = ('john', 'pass')
         timeout = 5 * 60
 
-        asserted_calls = [call(before_url, auth), call(feeds_url, auth),
-                          call(update_url1, auth, timeout),
-                          call(update_url2, auth, timeout),
-                          call(after_url, auth)]
+        # ordering can be switched due to threading, so try both cases
+        return ([call(before_url, auth), call(feeds_url, auth),
+                 call(update_url1, auth, timeout),
+                 call(update_url2, auth, timeout), call(after_url, auth)],
+                [call(before_url, auth), call(feeds_url, auth),
+                 call(update_url2, auth, timeout),
+                 call(update_url1, auth, timeout), call(after_url, auth)])
 
-        self.http.get.assert_has_calls(asserted_calls)
+    def test_api_v1_calls(self):
+        self._set_config(apilevel='v1-2', url=self.base_url, user='john',
+                         password='pass', mode='singlerun')
+        updater = self.container.resolve(Updater)
+        self._set_http_get({
+            'feeds': [{'id': 3, 'userId': 'john'}, {'id': 2, 'userId': 'deb'}]
+        })
+        updater.run()
+        self.assertIn(self.http.get.call_args_list, self._create_urls_v1())
+
+    def test_api_v2_calls(self):
+        self._set_config(apilevel='v2', url=self.base_url, user='john',
+                         password='pass', mode='singlerun')
+        updater = self.container.resolve(Updater)
+        self._set_http_get({
+            'data': {
+                'updater': [{'feedId': 3, 'userId': 'john'},
+                            {'feedId': 2, 'userId': 'deb'}]
+            }
+        })
+        updater.run()
+        self.assertIn(self.http.get.call_args_list, self._create_urls_v2())

@@ -15,8 +15,10 @@ class CliApi(Api):
     def __init__(self, config):
         directory = config.url
         phpini = config.phpini
-        self.directory = directory.rstrip('/')
-        base_command = ['php', '-f', self.directory + '/occ']
+        if not directory.endswith('/'):
+            directory += '/'
+        self.directory = directory
+        base_command = ['php', '-f', self.directory + 'occ']
         if phpini is not None and phpini.strip() != '':
             base_command += ['-c', phpini]
         self.before_cleanup_command = base_command + [
@@ -55,8 +57,7 @@ class CliUpdater(Updater):
         self.cli.run(self.api.before_cleanup_command)
 
     def start_update_thread(self, feeds):
-        return CliUpdateThread(feeds, self.logger,
-                               self.api, self.cli)
+        return CliUpdateThread(feeds, self.logger, self.api, self.cli)
 
     def all_feeds(self):
         feeds_json = self.cli.run(self.api.all_feeds_command).strip()
@@ -69,7 +70,7 @@ class CliUpdater(Updater):
     def after_update(self):
         self.logger.info('Running after update command: %s' %
                          ' '.join(self.api.after_cleanup_command))
-        self.cli.run(self.api.before_cleanup_command)
+        self.cli.run(self.api.after_cleanup_command)
 
 
 class CliUpdateThread(UpdateThread):

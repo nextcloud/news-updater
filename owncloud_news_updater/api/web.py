@@ -1,6 +1,7 @@
 import base64
 import urllib.parse
 import urllib.request
+from collections import OrderedDict
 
 from owncloud_news_updater.api.api import Api, Feed
 from owncloud_news_updater.api.updater import Updater, UpdateThread
@@ -96,10 +97,12 @@ class WebUpdateThread(UpdateThread):
         self.config = config
 
     def update_feed(self, feed):
-        data = {
-            'feedId': feed.feed_id,
-            'userId': feed.user_id
-        }
+        # make sure that the order is always defined for making it easier
+        # to test and reason about, normal dicts are not ordered
+        data = OrderedDict([
+            ('userId', feed.user_id),
+            ('feedId', feed.feed_id),
+        ])
         data = urllib.parse.urlencode(data)
         url = '%s?%s' % (self.api.update_url, data)
         self.logger.info('Calling update url: %s' % url)
