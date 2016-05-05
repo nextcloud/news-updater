@@ -27,7 +27,7 @@ class SingletonFactory(Factory):
         super().__init__(factory)
 
 
-class BaseContainer:
+class Container:
     """
     Simple container for Dependency Injection
     """
@@ -89,7 +89,7 @@ class BaseContainer:
         :argument source the key to resolve when the target is requested
         :argument target the name of the alias
         """
-        self.register(target, lambda: self.resolve(source))
+        self.register(target, lambda c: c.resolve(source))
 
     def _resolve_class(self, clazz):
         """

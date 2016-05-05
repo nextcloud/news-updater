@@ -8,7 +8,8 @@ from owncloud_news_updater.api.web import create_web_api, WebApi, \
 from owncloud_news_updater.common.argumentparser import ArgumentParser
 from owncloud_news_updater.config import ConfigParser, ConfigValidator, \
     Config, merge_configs
-from owncloud_news_updater.dependencyinjection.container import BaseContainer
+from owncloud_news_updater.dependencyinjection.container import \
+    Container as BaseContainer
 
 
 class Container(BaseContainer):
