@@ -15,7 +15,7 @@ Changelog
 **Bugfixes**
 
 - Fix bug that would exit update in singlerun mode when an error occurred during update
-- Fix bug that would not run after cleanup in cli mode
+- Fix bug that would not run the after cleanup command in cli mode and would therefore never remove old articles
 
 **Improvements**
 * Added a **--mode** parameter which allows you to run the updater using a cron. You have to ensure that only one instance run at a time however (e.g. using SystemD timers)
