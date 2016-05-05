@@ -259,9 +259,9 @@ If you still have to use a self-signed certificate no matter what, don't patch t
 
 Can I Run The Updater Using Cron
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Yes, you can by using the **--mode singlerun** parameter which will exit after an update.
+Yes, you can by using the **--mode singlerun** parameter which will exit after one full update.
 
-However it's your job to ensure, that the job will not be executed more than once at the same time. This **can take down your system and/or server** since each new updater will slow down the previous ones causing more updaters to be spawned.
+However it's your job to ensure, that the job will not be executed more than once at the same time. If update jobs overlap, they **can take down your system and/or server** since each new updater will slow down the previous ones causing more updaters to be spawned.
 
 If you can not ensure that the updater is run only one at a time use the default mode (**--mode endless**). This mode runs the update in a loop. You can control the update frequency through the **--interval** parameter (or **interval** using a config file). The updater works in the following way:
 * If a full update takes longer than the passed interval, another update will be run immediately afterwards
