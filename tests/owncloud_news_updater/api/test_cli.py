@@ -67,10 +67,8 @@ class TestCli(TestCase):
         self._set_config(apilevel='v2', url=self.base_url, mode='singlerun')
         updater = self.container.resolve(Updater)
         self._set_cli_run({
-            'data': {
-                'updater': [{'feedId': 3, 'userId': 'john'},
-                            {'feedId': 2, 'userId': 'deb'}]
-            }
+            'updater': [{'feedId': 3, 'userId': 'john'},
+                        {'feedId': 2, 'userId': 'deb'}]
         })
         updater.run()
 
@@ -81,10 +79,8 @@ class TestCli(TestCase):
                          phpini=self.phpini)
         updater = self.container.resolve(Updater)
         self._set_cli_run({
-            'data': {
-                'updater': [{'feedId': 3, 'userId': 'john'},
-                            {'feedId': 2, 'userId': 'deb'}]
-            }
+            'updater': [{'feedId': 3, 'userId': 'john'},
+                        {'feedId': 2, 'userId': 'deb'}]
         })
         updater.run()
 

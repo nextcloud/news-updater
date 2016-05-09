@@ -94,10 +94,8 @@ class TestWeb(TestCase):
                          password='pass', mode='singlerun')
         updater = self.container.resolve(Updater)
         self._set_http_get({
-            'data': {
-                'updater': [{'feedId': 3, 'userId': 'john'},
-                            {'feedId': 2, 'userId': 'deb'}]
-            }
+            'updater': [{'feedId': 3, 'userId': 'john'},
+                        {'feedId': 2, 'userId': 'deb'}]
         })
         updater.run()
         self.assertIn(self.http.get.call_args_list, self._create_urls_v2())

@@ -34,7 +34,7 @@ class CliApiV2(CliApi):
         super().__init__(config)
 
     def _parse_json(self, feed_json):
-        feed_json = feed_json['data']['updater']
+        feed_json = feed_json['updater']
         return [Feed(info['feedId'], info['userId']) for info in feed_json]
 
 
