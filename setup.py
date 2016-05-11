@@ -36,7 +36,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'owncloud-news-updater = owncloud_news_updater.__main__'
+            'owncloud-news-updater = owncloud_news_updater.__main__:main'
         ]
     }
 )

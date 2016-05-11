@@ -20,5 +20,11 @@ if sys.version_info < (3, 4):
     print('Error: Python 3.4 required but found %s' % python_version())
     exit(1)
 
-container = Container()
-container.resolve(Updater).run()
+
+def main():
+    container = Container()
+    container.resolve(Updater).run()
+
+
+if __name__ == '__main__':
+    main()
