@@ -3,6 +3,13 @@
 Changelog
 ---------
 
+9.0.1
++++++
+
+**Bugfixes**
+
+- Fix bug that would prevent running the updater on some systems, #4
+
 9.0.0
 +++++
 
