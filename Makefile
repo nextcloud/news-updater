@@ -34,3 +34,5 @@ test:
 	python3 -m mypy nextcloud_news_updater --disallow-untyped-defs
 	python3 -m nextcloud_news_updater --version
 	python3 -m unittest
+	#uncomment once mypy works properly
+	#python3 -m mypy owncloud_news_updater --disallow-untyped-defs
