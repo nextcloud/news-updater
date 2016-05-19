@@ -88,7 +88,7 @@ class Container:
         """
         self.register(target, lambda c: c.resolve(source))
 
-    def _resolve_class(self, clazz: type) -> object:
+    def _resolve_class(self, clazz: Any) -> object:
         """
         Constructs an instance based on the function annotations on an object's
         __init__ method
