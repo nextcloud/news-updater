@@ -6,8 +6,7 @@ python:
 
 before_install:
   - pip install pep8
-  - echo $PYTHON_VERSION
-  - if [[ $PYTHON_VERSION == "3.4" ]]; then pip3 install typing; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == "3.4" ]]; then pip3 install typing; fi
 
 script:
   - make test
