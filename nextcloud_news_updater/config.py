@@ -104,7 +104,7 @@ class ConfigParser:
         return config
 
     def _parse_ini_value(self, type_enum: int, contents: Any, key: str) -> \
-    Union[str, int, bool]:
+            Union[str, int, bool]:
         if type_enum == Types.integer:
             return int(contents.get(key))
         elif type_enum == Types.boolean:
