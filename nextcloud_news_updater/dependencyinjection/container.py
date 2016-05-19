@@ -99,5 +99,6 @@ class Container:
         if hasattr(clazz.__init__, '__annotations__'):
             annotations = clazz.__init__.__annotations__
             for name, type_hint in annotations.items():
-                arguments[name] = self.resolve(type_hint)
+                if name != 'return':
+                    arguments[name] = self.resolve(type_hint)
         return clazz(**arguments)
