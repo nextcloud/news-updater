@@ -1,5 +1,7 @@
 import configparser
 import os
+from typing import List, Union, Any
+from typing import Optional
 
 
 class InvalidConfigException(Exception):
@@ -36,7 +38,7 @@ class Config:
         'interval': Types.integer,
     }
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.loglevel = 'error'
         self.interval = 15 * 60
         self.timeout = 5 * 60
@@ -44,18 +46,18 @@ class Config:
         self.threads = 10
         self.mode = 'endless'
         self.password = ''
-        self.user = None
-        self.url = None
-        self.phpini = None
+        self.user = None  # type: Optional[str]
+        self.url = None  # type: Optional[str]
+        self.phpini = None  # type: Optional[str]
 
-    def is_web(self):
-        return self.url and (self.url.startswith('http://') or
-                             self.url.startswith('https://'))
+    def is_web(self) -> bool:
+        return self.url is not None and (self.url.startswith('http://') or
+                                         self.url.startswith('https://'))
 
 
 class ConfigValidator:
-    def validate(self, config):
-        result = []
+    def validate(self, config: Config) -> List[str]:
+        result = []  # type: List[str]
         if not config.url:
             return ['No url given']
 
@@ -80,7 +82,7 @@ class ConfigValidator:
 
 
 class ConfigParser:
-    def parse_file(self, path):
+    def parse_file(self, path: str) -> Config:
         parser = configparser.ConfigParser()
         successfully_parsed = parser.read(path)
         if len(successfully_parsed) <= 0:
@@ -101,7 +103,8 @@ class ConfigParser:
 
         return config
 
-    def _parse_ini_value(self, type_enum, contents, key):
+    def _parse_ini_value(self, type_enum: int, contents: Any, key: str) -> \
+    Union[str, int, bool]:
         if type_enum == Types.integer:
             return int(contents.get(key))
         elif type_enum == Types.boolean:
@@ -110,7 +113,7 @@ class ConfigParser:
             return contents.get(key)
 
 
-def merge_configs(args, config):
+def merge_configs(args, config: Config) -> None:
     """
     Merges values from argparse and configparser. Values from argparse will
     always override values from the config. Resulting values are set on the

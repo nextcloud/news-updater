@@ -1,3 +1,7 @@
+from typing import Callable, Any
+from typing import Dict
+
+
 class ResolveException(Exception):
     pass
 
@@ -7,11 +11,11 @@ class Factory:
     Wrapper for non shared factories
     """
 
-    def __init__(self, factory):
+    def __init__(self, factory: Callable[['Container'], Any]) -> None:
         self.factory = factory
 
-    def __call__(self, *args, **kwargs):
-        return self.factory(*args, **kwargs)
+    def __call__(self, container: 'Container') -> Any:
+        return self.factory(container)
 
 
 class SingletonFactory(Factory):
@@ -19,7 +23,7 @@ class SingletonFactory(Factory):
     Wrapper for shared factories
     """
 
-    def __init__(self, factory):
+    def __init__(self, factory: Callable[['Container'], Any]) -> None:
         super().__init__(factory)
 
 
@@ -28,11 +32,12 @@ class Container:
     Simple container for Dependency Injection
     """
 
-    def __init__(self):
-        self._singletons = {}
-        self._factories = {}
+    def __init__(self) -> None:
+        self._singletons = {}  # type: Dict[Any, Any]
+        self._factories = {}  # type: Dict[Any, Factory]
 
-    def register(self, key, factory, shared=True):
+    def register(self, key: Any, factory: Callable[['Container'], Any],
+                 shared: bool = True) -> None:
         """
         Registers a factory function for creating the class
         :argument key name under which the dependencies will be
@@ -49,7 +54,7 @@ class Container:
         else:
             self._factories[key] = Factory(factory)
 
-    def resolve(self, key):
+    def resolve(self, key: Any) -> Any:
         """
         Fetches an instance or creates one using the registered factory method
         :argument key the key to look up
@@ -75,7 +80,7 @@ class Container:
         else:
             return self._singletons[key]
 
-    def alias(self, source, target):
+    def alias(self, source: type, target: Any) -> Any:
         """
         Point a key to another key
         :argument source the key to resolve when the target is requested
@@ -83,7 +88,7 @@ class Container:
         """
         self.register(target, lambda c: c.resolve(source))
 
-    def _resolve_class(self, clazz):
+    def _resolve_class(self, clazz: type) -> object:
         """
         Constructs an instance based on the function annotations on an object's
         __init__ method

@@ -1,10 +1,11 @@
 import argparse
+from typing import Any
 
 from nextcloud_news_updater.version import get_version
 
 
 class ArgumentParser:
-    def __init__(self):
+    def __init__(self) -> None:
         self.parser = argparse.ArgumentParser()
         self.parser.add_argument('--threads', '-t',
                                  help='How many feeds should be fetched in '
@@ -69,8 +70,8 @@ class ArgumentParser:
                                       '8.1.0',
                                  nargs='?')
 
-    def parse(self):
+    def parse(self) -> Any:
         return self.parser.parse_args()
 
-    def print_help(self, file):
+    def print_help(self, file: Any) -> None:
         self.parser.print_help(file)

@@ -21,7 +21,7 @@ if sys.version_info < (3, 4):
     exit(1)
 
 
-def main():
+def main() -> None:
     container = Container()
     container.resolve(Updater).run()
 
