@@ -20,13 +20,13 @@ class Container(BaseContainer):
         self.register(Updater, self._create_updater)
         self.register(Config, self._create_config)
 
-    def _create_updater(self, container) -> Updater:
+    def _create_updater(self, container: BaseContainer) -> Updater:
         if container.resolve(Config).is_web():
             return container.resolve(WebUpdater)
         else:
             return container.resolve(CliUpdater)
 
-    def _create_config(self, container) -> Config:
+    def _create_config(self, container: BaseContainer) -> Config:
         parser = container.resolve(ArgumentParser)
         args = parser.parse()
         if args.config:

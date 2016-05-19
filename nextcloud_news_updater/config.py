@@ -113,7 +113,7 @@ class ConfigParser:
             return contents.get(key)
 
 
-def merge_configs(args, config: Config) -> None:
+def merge_configs(args: Any, config: Config) -> None:
     """
     Merges values from argparse and configparser. Values from argparse will
     always override values from the config. Resulting values are set on the
