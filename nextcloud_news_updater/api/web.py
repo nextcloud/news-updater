@@ -104,7 +104,7 @@ class WebUpdateThread(UpdateThread):
         # to test and reason about, normal dicts are not ordered
         data = OrderedDict([
             ('userId', feed.user_id),
-            ('feedId', feed.feed_id),
+            ('feedId', str(feed.feed_id)),
         ])
         url_data = urlencode(data)
         url = '%s?%s' % (self.api.update_url, url_data)

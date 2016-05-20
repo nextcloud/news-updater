@@ -35,4 +35,9 @@ test:
 	python3 -m nextcloud_news_updater --version
 	python3 -m unittest
 	#uncomment once mypy works properly
-	#python3 -m mypy owncloud_news_updater --disallow-untyped-defs
+	# make typecheck
+
+.PHONY: typecheck
+typecheck:
+	python3 -m mypy $(CURDIR)/owncloud_news_updater --disallow-untyped-defs
+
