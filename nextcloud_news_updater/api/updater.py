@@ -4,10 +4,9 @@ import time
 import traceback
 from typing import List
 
-from owncloud_news_updater.api.api import Feed
-
-from owncloud_news_updater.common.logger import Logger
-from owncloud_news_updater.config import Config
+from nextcloud_news_updater.api.api import Feed
+from nextcloud_news_updater.common.logger import Logger
+from nextcloud_news_updater.config import Config
 
 
 class UpdateThread(threading.Thread):

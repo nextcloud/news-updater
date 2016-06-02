@@ -42,13 +42,14 @@ class ArgumentParser:
                                       'updater. If omitted, the default one '
                                       'will be used')
         self.parser.add_argument('--user', '-u',
-                                 help='Admin username to log into ownCloud. '
+                                 help='Admin username to log into Nextcloud. '
                                       'Must be specified on the command line '
                                       'or in the config file if the updater '
                                       'should update over HTTP')
         self.parser.add_argument('--password', '-p',
-                                 help='Admin password to log into ownCloud if '
-                                      'the updater should update over HTTP')
+                                 help='Admin password to log into Nextcloud '
+                                      'if the updater should update over HTTP'
+                                 )
         self.parser.add_argument('--version', '-v', action='version',
                                  version=get_version(),
                                  help='Prints the updater\'s version')

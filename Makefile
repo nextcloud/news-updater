@@ -38,5 +38,5 @@ test:
 
 .PHONY: typecheck
 typecheck:
-	python3 -m mypy $(CURDIR)/owncloud_news_updater --disallow-untyped-defs
+	python3 -m mypy $(CURDIR)/nextcloud_news_updater --disallow-untyped-defs
 
