@@ -31,7 +31,6 @@ pypi: clean
 .PHONY: test
 test:
 	pep8 .
-	python3 -m mypy nextcloud_news_updater --disallow-untyped-defs
 	python3 -m nextcloud_news_updater --version
 	python3 -m unittest
 	#uncomment once mypy works properly
