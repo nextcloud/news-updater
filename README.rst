@@ -18,7 +18,7 @@ process may time out.
 
 Therefore the News app provides an API that offers a more fine grained
 control over updating feeds. This Python project implements an update
-mechanism that is based on the `updater REST API <https://github.com/nextcloud/news/wiki/Updater-1.2>`_ or (new in Nextcloud News 8.1.0) the
+mechanism that is based on the `updater REST API <https://github.com/nextcloud/news/tree/master/docs>`_ or (new in Nextcloud News 8.1.0) the
 console based update API.
 
 .. contents:: :local:
