@@ -15,7 +15,8 @@ with open('nextcloud_news_updater/version.txt', 'r') as infile:
 setup(
     name='nextcloud_news_updater',
     version=version,
-    description='Nextcloud News updater - Fast updates for your RSS/Atom feeds',
+    description='Nextcloud News updater - Fast updates for your RSS/Atom '
+                'feeds',
     long_description=long_description,
     author='Bernhard Posselt',
     author_email='dev@bernhard-posselt.com',
