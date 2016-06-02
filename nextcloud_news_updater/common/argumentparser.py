@@ -61,8 +61,8 @@ class ArgumentParser:
                                  choices=['endless', 'singlerun'])
         self.parser.add_argument('url',
                                  help='The URL or absolute path to the '
-                                      'directory where owncloud is installed. '
-                                      'Must be specified on the command line '
+                                      'directory where Nextcloud is installed.'
+                                      ' Must be specified on the command line '
                                       'or in the config file. If the URL '
                                       'starts with http:// or https://, a '
                                       'user and password are required. '
