@@ -7,8 +7,8 @@ news config, see the README.rst file in the top directory for more information.
 import sys
 from platform import python_version
 
-from owncloud_news_updater.container import Container
-from owncloud_news_updater.api.updater import Updater
+from nextcloud_news_updater.container import Container
+from nextcloud_news_updater.api.updater import Updater
 
 __author__ = 'Bernhard Posselt'
 __copyright__ = 'Copyright 2012-2016, Bernhard Posselt'

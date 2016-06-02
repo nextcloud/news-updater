@@ -1,14 +1,14 @@
-ownCloud News Updater
+Nextcloud News Updater
 =====================
 
-.. image:: https://img.shields.io/pypi/v/owncloud_news_updater.svg
-    :target: https://pypi.python.org/pypi/owncloud_news_updater
-.. image:: https://travis-ci.org/owncloud/news-updater.svg?branch=master
-    :target: https://travis-ci.org/owncloud/news-updater
+.. image:: https://img.shields.io/pypi/v/nextcloud_news_updater.svg
+    :target: https://pypi.python.org/pypi/nextcloud_news_updater
+.. image:: https://travis-ci.org/nextcloud/news-updater.svg?branch=master
+    :target: https://travis-ci.org/nextcloud/news-updater
 
-This Python library is a parallel feed updater for the `ownCloud News app <https://github.com/owncloud/news>`_
+This Python library is a parallel feed updater for the `Nextcloud News app <https://github.com/nextcloud/news>`_
 
-ownCloud does not require people to install threading or multiprocessing
+Nextcloud does not require people to install threading or multiprocessing
 libraries. Because the feed update process is mainly limited by I/O, parallel
 fetching of RSS feed updates can speed up the updating process significantly.
 
@@ -17,7 +17,7 @@ process may time out.
 
 Therefore the News app provides an API that offers a more fine grained
 control over updating feeds. This Python project implements an update
-mechanism that is based on the `updater REST API <https://github.com/owncloud/news/wiki/Updater-1.2>`_ or (new in ownCloud News 8.1.0) the
+mechanism that is based on the `updater REST API <https://github.com/nextcloud/news/wiki/Updater-1.2>`_ or (new in Nextcloud News 8.1.0) the
 console based update API.
 
 .. contents:: :local:
@@ -32,8 +32,8 @@ Pre-Installation
 ----------------
 
 To run the updates via an external threaded script the cron updater has to be
-disabled. To do that go to the admin section an uncheck the **Use ownCloud
-cron** checkbox or open **owncloud/data/news/config/config.ini** and set::
+disabled. To do that go to the admin section an uncheck the **Use Nextcloud
+cron** checkbox or open **nextcloud/data/news/config/config.ini** and set::
 
     useCronUpdates = true
 
@@ -61,15 +61,15 @@ documentation <http://python-packaging-user-guide.readthedocs.org/en/latest/inst
 
 After installing pip, run::
 
-    sudo pip3 install owncloud_news_updater --install-option="--install-scripts=/usr/bin"
+    sudo pip3 install nextcloud_news_updater --install-option="--install-scripts=/usr/bin"
 
 To update the library, run::
 
-    sudo pip3 install --upgrade owncloud_news_updater --install-option="--install-scripts=/usr/bin"
+    sudo pip3 install --upgrade nextcloud_news_updater --install-option="--install-scripts=/usr/bin"
 
 To uninstall the library run::
 
-    sudo pip3 uninstall owncloud_news_updater
+    sudo pip3 uninstall nextcloud_news_updater
 
 Manual Installation
 ~~~~~~~~~~~~~~~~~~~
@@ -92,7 +92,7 @@ If you do not want to install the script at all you can call it directly.
 
 Simply run the updater using::
 
-    python3 -m owncloud_news_updater /path/to/owncloud
+    python3 -m nextcloud_news_updater /path/to/nextcloud
 
 Usage
 -----
@@ -101,21 +101,21 @@ There are two ways to run the updater:
 
 * Using the console API (recommended)::
 
-    owncloud-news-updater /path/to/owncloud
+    nextcloud-news-updater /path/to/nextcloud
 
-* Using the REST API (when running the updater on a different machine than ownCloud)::
+* Using the REST API (when running the updater on a different machine than Nextcloud)::
 
-    owncloud-news-updater https://domain.com/path/to/owncloud --user admin_user --password admin_password
+    nextcloud-news-updater https://domain.com/path/to/nextcloud --user admin_user --password admin_password
 
 **Note**: **admin_user** is a user id with admin rights, **admin_password** the user's password
 
 You can view all options by running::
 
-    owncloud-news-updater --help
+    nextcloud-news-updater --help
 
 ::
 
-    usage: owncloud-news-updater [-h] [--threads THREADS] [--timeout TIMEOUT]
+    usage: nextcloud-news-updater [-h] [--threads THREADS] [--timeout TIMEOUT]
                        [--interval INTERVAL] [--apilevel {v1-2,v2}]
                        [--loglevel {info,error}] [--config CONFIG]
                        [--phpini PHPINI] [--user USER] [--password PASSWORD]
@@ -124,7 +124,7 @@ You can view all options by running::
 
     positional arguments:
       url                   The URL or absolute path to the directory where
-                            owncloud is installed. Must be specified on the
+                            nextcloud is installed. Must be specified on the
                             command line or in the config file. If the URL starts
                             with http:// or https://, a user and password are
                             required. Otherwise the updater tries to use the
@@ -156,11 +156,11 @@ You can view all options by running::
                             Custom absolute path to the php.ini file to use for
                             the command line updater. If omitted, the default one
                             will be used
-      --user USER, -u USER  Admin username to log into ownCloud. Must be specified
+      --user USER, -u USER  Admin username to log into Nextcloud. Must be specified
                             on the command line or in the config file if the
                             updater should update over HTTP
       --password PASSWORD, -p PASSWORD
-                            Admin password to log into ownCloud if the updater
+                            Admin password to log into Nextcloud if the updater
                             should update over HTTP
       --version, -v         Prints the updater's version
       --mode {endless,singlerun}, -m {endless,singlerun}
@@ -183,8 +183,8 @@ You can also put your settings in a config file, looking like this:
     threads = 10
     interval = 900
     loglevel = error
-    # or https://domain.com/owncloud when using the REST API
-    url = /path/to/owncloud
+    # or https://domain.com/nextcloud when using the REST API
+    url = /path/to/nextcloud
     phpini = /path/to/custom/php.ini
     # or v2 for News 9.0.0 or greater
     apilevel = v1-2
@@ -194,18 +194,18 @@ You can also put your settings in a config file, looking like this:
 
 Then run the updater with::
 
-    owncloud-news-updater -c /path/to/config
+    nextcloud-news-updater -c /path/to/config
 
 
 **Note**: Command line parameters will always overwrite config parameters, so if you just want to change your loglevel to info for one run you can now do the following without globally changing the config file::
 
-    owncloud-news-updater -c /path/to/config --mode singlerun --loglevel info
+    nextcloud-news-updater -c /path/to/config --mode singlerun --loglevel info
 
 Running The Updater As Systemd Service
 --------------------------------------
 Almost always you want to run and stop the updater using your in init system.
 As for Systemd, you can create a simple text file at
-**/etc/systemd/system/owncloud-news-updater.service** with the following contents:
+**/etc/systemd/system/nextcloud-news-updater.service** with the following contents:
 
 .. code:: ini
 
@@ -215,19 +215,19 @@ As for Systemd, you can create a simple text file at
     [Service]
     Type=simple
     User=http
-    ExecStart=/usr/bin/owncloud-news-updater -c /etc/owncloud/news/updater.ini
+    ExecStart=/usr/bin/nextcloud-news-updater -c /etc/nextcloud/news/updater.ini
 
     [Install]
     WantedBy=default.target
 
 Then to enable and start it run::
 
-    sudo systemctl enable owncloud-news-updater.service
-    sudo systemctl start owncloud-news-updater.service
+    sudo systemctl enable nextcloud-news-updater.service
+    sudo systemctl start nextcloud-news-updater.service
 
 **Note**: If you are using the cli based updater (as in set an absolute directory as url)
 you need to set the web-server user as user in the unit file. Otherwise the command
-will fail because ownCloud checks for the owner of its files. This user
+will fail because Nextcloud checks for the owner of its files. This user
 varies from distribution to distribution, e.g in Debian and Ubuntu you would use the
 **www-data** user:
 
@@ -239,7 +239,7 @@ varies from distribution to distribution, e.g in Debian and Ubuntu you would use
     [Service]
     Type=simple
     User=www-data
-    ExecStart=/usr/bin/owncloud-news-updater -c /etc/owncloud/news/updater.ini
+    ExecStart=/usr/bin/nextcloud-news-updater -c /etc/nextcloud/news/updater.ini
 
     [Install]
     WantedBy=default.target
@@ -251,7 +251,7 @@ Troubleshooting
 ----------------
 If you are having trouble debugging updater errors, try running it again using the **info** loglevel::
 
-    owncloud-news-updater --loglevel info -c /path/to/config.ini
+    nextcloud-news-updater --loglevel info -c /path/to/config.ini
 
 How Do I Enable Support For Self-Signed Certificates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -276,7 +276,7 @@ If you can not ensure that the updater is run only one at a time use the default
 
 Using The CLI Based Updater Fails
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The updater uses the PHP executable to run the occ file inside your owncloud directory. The general process boils down to the following:
+The updater uses the PHP executable to run the occ file inside your nextcloud directory. The general process boils down to the following:
 
 .. code-block:: bash
 
@@ -297,6 +297,6 @@ Most of the time there are two possible points of failure that can be debugged b
 
 * Most distributions uses different **php.ini** files for your command line and web-server. This can manifest itself in weird errors like not being able to connect to the database. The solution is to either adjust **php.ini** used for the CLI PHP or to use a different **php.ini** altogether by specifying the **--phpini** parameter, e.g.::
 
-    owncloud-news-updater -c /path/to/config --phpini /etc/php/owncloud-news-updater.ini
+    nextcloud-news-updater -c /path/to/config --phpini /etc/php/nextcloud-news-updater.ini
 
-* The **news:updater:all-feeds** command returns invalid JSON. This can be due to due broken or missing **php.ini** settings or PHP warnings/errors produced by ownCloud. The solution to this issue can range from adjusting your **php.ini** (see previous point) to manually patching ownCloud to remove the warnings from the output.
+* The **news:updater:all-feeds** command returns invalid JSON. This can be due to due broken or missing **php.ini** settings or PHP warnings/errors produced by Nextcloud. The solution to this issue can range from adjusting your **php.ini** (see previous point) to manually patching Nextcloud to remove the warnings from the output.

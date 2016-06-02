@@ -13,16 +13,16 @@ clean:
 	rm -rf dist
 	rm -rf MANIFEST
 	rm -rf build
-	rm -rf owncloud_news_updater.egg-info
+	rm -rf nextcloud_news_updater.egg-info
 
 .PHONY: update
 update: clean
-	sudo pip3 uninstall owncloud_news_updater
+	sudo pip3 uninstall nextcloud_news_updater
 	sudo python3 setup.py install
 
 .PHONY: uninstall
 uninstall: clean
-	sudo pip3 uninstall owncloud_news_updater
+	sudo pip3 uninstall nextcloud_news_updater
 
 .PHONY: clean
 pypi: clean
@@ -31,5 +31,5 @@ pypi: clean
 .PHONY: test
 test:
 	pep8 .
-	python3 -m owncloud_news_updater --version
+	python3 -m nextcloud_news_updater --version
 	python3 -m unittest

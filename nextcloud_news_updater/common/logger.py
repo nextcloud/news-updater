@@ -1,6 +1,6 @@
 import logging
 
-from owncloud_news_updater.config import Config
+from nextcloud_news_updater.config import Config
 
 
 class Logger:

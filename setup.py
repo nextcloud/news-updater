@@ -9,22 +9,22 @@ if version_info < (3, 4):
 with open('README.rst', 'r') as infile:
     long_description = infile.read()
 
-with open('owncloud_news_updater/version.txt', 'r') as infile:
+with open('nextcloud_news_updater/version.txt', 'r') as infile:
     version = ''.join(infile.read().split())
 
 setup(
-    name='owncloud_news_updater',
+    name='nextcloud_news_updater',
     version=version,
-    description='ownCloud News updater - Fast updates for your RSS/Atom feeds',
+    description='Nextcloud News updater - Fast updates for your RSS/Atom feeds',
     long_description=long_description,
     author='Bernhard Posselt',
     author_email='dev@bernhard-posselt.com',
-    url='https://github.com/owncloud/news-updater',
+    url='https://github.com/nextcloud/news-updater',
     packages=find_packages(),
     include_package_data=True,
     license='GPL',
     install_requires=[],
-    keywords=['owncloud', 'news', 'updater', 'RSS', 'Atom', 'feed', 'reader'],
+    keywords=['nextcloud', 'news', 'updater', 'RSS', 'Atom', 'feed', 'reader'],
     classifiers=[
         'Intended Audience :: System Administrators',
         'Environment :: Console',
@@ -36,7 +36,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'owncloud-news-updater = owncloud_news_updater.__main__:main'
+            'nextcloud-news-updater = nextcloud_news_updater.__main__:main'
         ]
     }
 )

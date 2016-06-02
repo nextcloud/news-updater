@@ -1,12 +1,12 @@
 from unittest import TestCase
 from configparser import MissingSectionHeaderError
 
-from owncloud_news_updater.common.argumentparser import ArgumentParser
-from owncloud_news_updater.config import InvalidConfigException, \
+from nextcloud_news_updater.common.argumentparser import ArgumentParser
+from nextcloud_news_updater.config import InvalidConfigException, \
     ConfigParser, merge_configs, ConfigValidator, InvalidConfigKeyException, \
     Config
-from owncloud_news_updater.container import Container
-from tests.owncloud_news_updater import find_test_config, assert_raises
+from nextcloud_news_updater.container import Container
+from tests.nextcloud_news_updater import find_test_config, assert_raises
 
 
 class Args:

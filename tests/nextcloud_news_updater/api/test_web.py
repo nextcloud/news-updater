@@ -2,10 +2,10 @@ import json
 from unittest import TestCase
 from unittest.mock import MagicMock, call
 
-from owncloud_news_updater.api.updater import Updater
-from owncloud_news_updater.api.web import HttpClient, WebApi, WebApiV2
-from owncloud_news_updater.config import Config
-from owncloud_news_updater.container import Container
+from nextcloud_news_updater.api.updater import Updater
+from nextcloud_news_updater.api.web import HttpClient, WebApi, WebApiV2
+from nextcloud_news_updater.config import Config
+from nextcloud_news_updater.container import Container
 
 
 class TestWeb(TestCase):

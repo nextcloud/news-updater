@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from owncloud_news_updater.dependencyinjection.container import Container
+from nextcloud_news_updater.dependencyinjection.container import Container
 
 
 class A:

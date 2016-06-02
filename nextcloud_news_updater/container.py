@@ -1,14 +1,14 @@
 import sys
 
-from owncloud_news_updater.api.cli import CliUpdater, CliApi, \
+from nextcloud_news_updater.api.cli import CliUpdater, CliApi, \
     create_cli_api
-from owncloud_news_updater.api.updater import Updater
-from owncloud_news_updater.api.web import create_web_api, WebApi, \
+from nextcloud_news_updater.api.updater import Updater
+from nextcloud_news_updater.api.web import create_web_api, WebApi, \
     WebUpdater
-from owncloud_news_updater.common.argumentparser import ArgumentParser
-from owncloud_news_updater.config import ConfigParser, ConfigValidator, \
+from nextcloud_news_updater.common.argumentparser import ArgumentParser
+from nextcloud_news_updater.config import ConfigParser, ConfigValidator, \
     Config, merge_configs
-from owncloud_news_updater.dependencyinjection.container import \
+from nextcloud_news_updater.dependencyinjection.container import \
     Container as BaseContainer
 
 

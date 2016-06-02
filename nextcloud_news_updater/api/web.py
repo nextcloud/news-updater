@@ -3,10 +3,10 @@ import urllib.parse
 import urllib.request
 from collections import OrderedDict
 
-from owncloud_news_updater.api.api import Api, Feed
-from owncloud_news_updater.api.updater import Updater, UpdateThread
-from owncloud_news_updater.common.logger import Logger
-from owncloud_news_updater.config import Config
+from nextcloud_news_updater.api.api import Api, Feed
+from nextcloud_news_updater.api.updater import Updater, UpdateThread
+from nextcloud_news_updater.common.logger import Logger
+from nextcloud_news_updater.config import Config
 
 
 class WebApi(Api):

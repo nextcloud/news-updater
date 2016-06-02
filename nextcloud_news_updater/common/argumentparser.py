@@ -1,6 +1,6 @@
 import argparse
 
-from owncloud_news_updater.version import get_version
+from nextcloud_news_updater.version import get_version
 
 
 class ArgumentParser:
