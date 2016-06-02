@@ -2,6 +2,46 @@ import sys
 import threading
 import time
 import traceback
+from typing import List
+
+from nextcloud_news_updater.api.api import Feed
+from nextcloud_news_updater.common.logger import Logger
+from nextcloud_news_updater.config import Config
+
+
+class UpdateThread(threading.Thread):
+    """
+    Baseclass for the updating thread which executes the feed updates in
+    parallel
+    """
+    lock = threading.Lock()
+
+    def __init__(self, feeds: List[Feed], logger: Logger) -> None:
+        super().__init__()
+        self.feeds = feeds
+        self.logger = logger
+
+    def run(self) -> None:
+        while True:
+            with UpdateThread.lock:
+                if len(self.feeds) > 0:
+                    feed = self.feeds.pop()
+                else:
+                    return
+            try:
+                self.logger.info('Updating feed with id %s and user %s' %
+                                 (feed.feed_id, feed.user_id))
+                self.update_feed(feed)
+            except Exception as e:
+                self.logger.error(str(e))
+                traceback.print_exc(file=sys.stderr)
+
+    def update_feed(self, feed: Feed) -> None:
+        """
+        Updates a single feed
+        feed: the feed object containing the feed_id and user_id
+        """
+        raise NotImplementedError
 
 
 class Updater:
@@ -10,11 +50,11 @@ class Updater:
     threading and the general workflow
     """
 
-    def __init__(self, config, logger):
+    def __init__(self, config: Config, logger: Logger) -> None:
         self.logger = logger
         self.config = config
 
-    def run(self):
+    def run(self) -> None:
         single_run = self.config.mode == 'singlerun'
         if single_run:
             self.logger.info('Running update once with %d threads' %
@@ -58,49 +98,14 @@ class Updater:
                 else:
                     time.sleep(30)
 
-    def before_update(self):
+    def before_update(self) -> None:
         raise NotImplementedError
 
-    def start_update_thread(self, feeds):
+    def start_update_thread(self, feeds: List[Feed]) -> UpdateThread:
         raise NotImplementedError
 
-    def all_feeds(self):
+    def all_feeds(self) -> List[Feed]:
         raise NotImplementedError
 
-    def after_update(self):
-        raise NotImplementedError
-
-
-class UpdateThread(threading.Thread):
-    """
-    Baseclass for the updating thread which executes the feed updates in
-    parallel
-    """
-    lock = threading.Lock()
-
-    def __init__(self, feeds, logger):
-        super().__init__()
-        self.feeds = feeds
-        self.logger = logger
-
-    def run(self):
-        while True:
-            with UpdateThread.lock:
-                if len(self.feeds) > 0:
-                    feed = self.feeds.pop()
-                else:
-                    return
-            try:
-                self.logger.info('Updating feed with id %s and user %s' %
-                                 (feed.feed_id, feed.user_id))
-                self.update_feed(feed)
-            except Exception as e:
-                self.logger.error(e)
-                traceback.print_exc(file=sys.stderr)
-
-    def update_feed(self, feed):
-        """
-        Updates a single feed
-        feed: the feed object containing the feed_id and user_id
-        """
+    def after_update(self) -> None:
         raise NotImplementedError

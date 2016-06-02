@@ -1,10 +1,11 @@
 import argparse
+from typing import Any
 
 from nextcloud_news_updater.version import get_version
 
 
 class ArgumentParser:
-    def __init__(self):
+    def __init__(self) -> None:
         self.parser = argparse.ArgumentParser()
         self.parser.add_argument('--threads', '-t',
                                  help='How many feeds should be fetched in '
@@ -41,13 +42,14 @@ class ArgumentParser:
                                       'updater. If omitted, the default one '
                                       'will be used')
         self.parser.add_argument('--user', '-u',
-                                 help='Admin username to log into ownCloud. '
+                                 help='Admin username to log into Nextcloud. '
                                       'Must be specified on the command line '
                                       'or in the config file if the updater '
                                       'should update over HTTP')
         self.parser.add_argument('--password', '-p',
-                                 help='Admin password to log into ownCloud if '
-                                      'the updater should update over HTTP')
+                                 help='Admin password to log into Nextcloud '
+                                      'if the updater should update over HTTP'
+                                 )
         self.parser.add_argument('--version', '-v', action='version',
                                  version=get_version(),
                                  help='Prints the updater\'s version')
@@ -59,8 +61,8 @@ class ArgumentParser:
                                  choices=['endless', 'singlerun'])
         self.parser.add_argument('url',
                                  help='The URL or absolute path to the '
-                                      'directory where owncloud is installed. '
-                                      'Must be specified on the command line '
+                                      'directory where Nextcloud is installed.'
+                                      ' Must be specified on the command line '
                                       'or in the config file. If the URL '
                                       'starts with http:// or https://, a '
                                       'user and password are required. '
@@ -69,8 +71,8 @@ class ArgumentParser:
                                       '8.1.0',
                                  nargs='?')
 
-    def parse(self):
+    def parse(self) -> Any:
         return self.parser.parse_args()
 
-    def print_help(self, file):
+    def print_help(self, file: Any) -> None:
         self.parser.print_help(file)
