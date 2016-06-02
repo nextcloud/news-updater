@@ -8,6 +8,7 @@ Nextcloud News Updater
 
 This Python library is a parallel feed updater for the `Nextcloud News app <https://github.com/nextcloud/news>`_
 
+
 Nextcloud does not require people to install threading or multiprocessing
 libraries. Because the feed update process is mainly limited by I/O, parallel
 fetching of RSS feed updates can speed up the updating process significantly.
