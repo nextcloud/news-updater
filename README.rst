@@ -1,5 +1,5 @@
 Nextcloud News Updater
-=====================
+======================
 
 .. image:: https://img.shields.io/pypi/v/nextcloud_news_updater.svg
     :target: https://pypi.python.org/pypi/nextcloud_news_updater
