@@ -144,8 +144,7 @@ You can view all options by running::
                             updates in seconds, defaults to 15 minutes. The update
                             timespan will be subtracted from the interval.
       --apilevel {v1-2,v2}, -a {v1-2,v2}
-                            API level. Use v2 for News 9.0.0 or greater, v1-2 for
-                            lower versions
+                            API level. Use v1-2, v2 is currently a draft only
       --loglevel {info,error}, -l {info,error}
                             Log granularity, info will log all urls and received
                             data, error will only log errors
@@ -187,7 +186,7 @@ You can also put your settings in a config file, looking like this:
     # or https://domain.com/nextcloud when using the REST API
     url = /path/to/nextcloud
     phpini = /path/to/custom/php.ini
-    # or v2 for News 9.0.0 or greater
+    # or v2 which is currently a draft
     apilevel = v1-2
     mode = endless
 
