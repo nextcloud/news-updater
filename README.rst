@@ -26,8 +26,7 @@ console based update API.
 Dependencies
 ------------
 
-* **Python >=3.4**
-* **typing** (from pip) if you are running Python 3.4
+* **Python >=3.5**
 
 Pre-Installation
 ----------------
@@ -116,16 +115,16 @@ You can view all options by running::
 
 ::
 
-    usage: nextcloud-news-updater [-h] [--threads THREADS] [--timeout TIMEOUT]
+    usage: __main__.py [-h] [--threads THREADS] [--timeout TIMEOUT]
                        [--interval INTERVAL] [--apilevel {v1-2,v2}]
                        [--loglevel {info,error}] [--config CONFIG]
                        [--phpini PHPINI] [--user USER] [--password PASSWORD]
-                       [--version] [--mode {endless,singlerun}]
+                       [--version] [--mode {endless,singlerun}] [--php PHP]
                        [url]
 
     positional arguments:
       url                   The URL or absolute path to the directory where
-                            nextcloud is installed. Must be specified on the
+                            Nextcloud is installed. Must be specified on the
                             command line or in the config file. If the URL starts
                             with http:// or https://, a user and password are
                             required. Otherwise the updater tries to use the
@@ -156,9 +155,9 @@ You can view all options by running::
                             Custom absolute path to the php.ini file to use for
                             the command line updater. If omitted, the default one
                             will be used
-      --user USER, -u USER  Admin username to log into Nextcloud. Must be specified
-                            on the command line or in the config file if the
-                            updater should update over HTTP
+      --user USER, -u USER  Admin username to log into Nextcloud. Must be
+                            specified on the command line or in the config file if
+                            the updater should update over HTTP
       --password PASSWORD, -p PASSWORD
                             Admin password to log into Nextcloud if the updater
                             should update over HTTP
@@ -167,6 +166,8 @@ You can view all options by running::
                             Mode to run the updater in: endless runs the update
                             again after the specified interval, singlerun only
                             executes the update once
+      --php PHP             Path to the PHP binary, e.g. /usr/bin/php7.0, defaults
+                            to php
 
 
 
@@ -189,6 +190,8 @@ You can also put your settings in a config file, looking like this:
     # or v2 which is currently a draft
     apilevel = v1-2
     mode = endless
+    # path to php binary
+    php = /usr/bin/php7.0
 
 **Note**: You can omit options in the config file if you want to use the defaults, but you can not have more than the allowed parameters present, otherwise an exception will abort the updater.
 

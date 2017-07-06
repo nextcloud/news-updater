@@ -19,7 +19,7 @@ class CliApi(Api):
         if not directory.endswith('/'):
             directory += '/'
         self.directory = directory
-        base_command = ['php', '-f', self.directory + 'occ']
+        base_command = [config.php, '-f', self.directory + 'occ']
         if phpini is not None and phpini.strip() != '':
             base_command += ['-c', phpini]
         self.before_cleanup_command = base_command + [

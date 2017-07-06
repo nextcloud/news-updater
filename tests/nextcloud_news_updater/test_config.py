@@ -38,6 +38,7 @@ class TestConfig(TestCase):
         self.assertEqual(config.phpini, '/path/to/custom/php.ini')
         self.assertEqual(config.apilevel, 'v2')
         self.assertEqual(config.mode, 'singlerun')
+        self.assertEqual(config.php, '/usr/local/bin/php7.0')
 
     def test_parse_defaults(self):
         config = self.parser.parse_file(find_test_config('empty.ini'))

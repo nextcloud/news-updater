@@ -3,6 +3,17 @@
 Changelog
 ---------
 
+10.0.0
++++++
+
+**Breaking Changes**
+
+* Require Python 3.5 or greater
+
+**Improvements**
+
+- Added option to specify PHP binary path
+
 9.0.1
 +++++
 

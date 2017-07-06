@@ -59,6 +59,10 @@ class ArgumentParser:
                                       'specified interval, singlerun only '
                                       'executes the update once',
                                  choices=['endless', 'singlerun'])
+        self.parser.add_argument('--php',
+                                 help='Path to the PHP binary, '
+                                      'e.g. /usr/bin/php7.0, defaults to '
+                                      'php', default='php')
         self.parser.add_argument('url',
                                  help='The URL or absolute path to the '
                                       'directory where Nextcloud is installed.'

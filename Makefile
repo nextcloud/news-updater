@@ -30,7 +30,7 @@ pypi: clean
 
 .PHONY: test
 test:
-	pep8 .
+	pycodestyle nextcloud_news_updater
 	python3 -m nextcloud_news_updater --version
 	python3 -m unittest
 	#uncomment once mypy works properly

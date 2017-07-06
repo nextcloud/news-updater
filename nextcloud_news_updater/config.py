@@ -36,6 +36,7 @@ class Config:
         'mode': Types.string,
         'threads': Types.integer,
         'interval': Types.integer,
+        'php': Types.string,
     }
 
     def __init__(self) -> None:
@@ -45,6 +46,7 @@ class Config:
         self.apilevel = 'v1-2'
         self.threads = 10
         self.mode = 'endless'
+        self.php = 'php'
         self.password = ''
         self.user = None  # type: Optional[str]
         self.url = None  # type: Optional[str]
