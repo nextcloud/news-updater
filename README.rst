@@ -115,7 +115,7 @@ You can view all options by running::
 
 ::
 
-    usage: __main__.py [-h] [--threads THREADS] [--timeout TIMEOUT]
+    usage: nextcloud-news-updater [-h] [--threads THREADS] [--timeout TIMEOUT]
                        [--interval INTERVAL] [--apilevel {v1-2,v2}]
                        [--loglevel {info,error}] [--config CONFIG]
                        [--phpini PHPINI] [--user USER] [--password PASSWORD]
