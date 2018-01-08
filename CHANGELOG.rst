@@ -3,6 +3,14 @@
 Changelog
 ---------
 
+10.0.1
++++++
+
+**Bugfixes**
+
+- Set PHP binary location from configuration if provided, #11
+
+
 10.0.0
 +++++
 
