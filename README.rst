@@ -258,11 +258,7 @@ If you are having trouble debugging updater errors, try running it again using t
 
 How Do I Enable Support For Self-Signed Certificates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-If you are using self-signed certificates, don't. It's very easy to sign your cert for free from either one of the following three websites:
-
-* `Lets Encrypt <https://letsencrypt.org/>`_
-* `StartSSL <https://www.startssl.com/>`_
-* `WoSign <https://www.wosign.com/english/>`_
+If you are using self-signed certificates, don't. It's very easy to sign your cert for free from `Lets Encrypt <https://letsencrypt.org/>`_
 
 If you still have to use a self-signed certificate no matter what, don't patch the code to turn off certificate verification but rather globally add your certificate to the trusted certificates. Read up on your distributions documentation to find out how.
 
