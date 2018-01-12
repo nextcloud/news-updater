@@ -302,9 +302,9 @@ Most of the time there are two possible points of failure that can be debugged b
 
 Working with Centos/RHEL
 ~~~~~~~~~~~~~~~~~~~~~~~~
-Since Centos only Provides Python3.4, you can use _SoftwareCollections: https://www.softwarecollections.org/en/ to install a newer Python Version.
+Since Centos only provides Python 3.4, you can use `SoftwareCollections <https://www.softwarecollections.org>`_ to install a newer Python version.
 
-For Example Python 3.5: https://www.softwarecollections.org/en/scls/rhscl/rh-python35/
+For example Python 3.5: https://www.softwarecollections.org/en/scls/rhscl/rh-python35/
 
 .. code-block:: bash
 
@@ -320,10 +320,10 @@ For Example Python 3.5: https://www.softwarecollections.org/en/scls/rhscl/rh-pyt
     # 4. Install nextcloud-news.updater
     $ sudo pip3 install nextcloud_news_updater --install-option="--install-scripts=/usr/bin"
 
-After the Install you can run The Updater as a Service by extending the Service File with the correct Environment Variable for your Python version. In This Example we use Python 3.5:
+After the install you can run the updater as a service by extending the service file with the correct environment variable for your Python version. In this example we use Python 3.5:
 
 .. code:: ini
-    
+
     [Unit]
     After=default.target
 
