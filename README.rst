@@ -299,3 +299,39 @@ Most of the time there are two possible points of failure that can be debugged b
     nextcloud-news-updater -c /path/to/config --phpini /etc/php/nextcloud-news-updater.ini
 
 * The **news:updater:all-feeds** command returns invalid JSON. This can be due to due broken or missing **php.ini** settings or PHP warnings/errors produced by Nextcloud. The solution to this issue can range from adjusting your **php.ini** (see previous point) to manually patching Nextcloud to remove the warnings from the output.
+
+Working with Centos/RHEL
+~~~~~~~~~~~~~~~~~~~~~~~~
+Since Centos only Provides Python3.4, you can use _SoftwareCollections: https://www.softwarecollections.org/en/ to install a newer Python Version.
+
+For Example Python 3.5: https://www.softwarecollections.org/en/scls/rhscl/rh-python35/
+
+.. code-block:: bash
+
+    # 1. Install the Software Collection Repository
+    $ sudo yum install centos-release-scl
+
+    # 2. Install the collection:
+    $ sudo yum install rh-python35
+
+    # 3. Start using software collections:
+    $ scl enable rh-python35 bash
+
+    # 4. Install nextcloud-news.updater
+    $ sudo pip3 install nextcloud_news_updater --install-option="--install-scripts=/usr/bin"
+
+After the Install you can run The Updater as a Service by extending the Service File with the correct Environment Variable for your Python version. In This Example we use Python 3.5:
+
+.. code:: ini
+    
+    [Unit]
+    After=default.target
+
+    [Service]
+    Type=simple
+    User=http
+    ExecStart=/usr/bin/nextcloud-news-updater -c /etc/nextcloud-news-updater.ini
+    Environment=LD_LIBRARY_PATH=/opt/rh/rh-python35/root/usr/lib64
+
+    [Install]
+    WantedBy=default.target
