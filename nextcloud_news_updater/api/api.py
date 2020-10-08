@@ -13,17 +13,26 @@ class Feed:
 
 
 class Api:
-    def parse_feed(self, json_string: str) -> List[Feed]:
-        """
-        Wrapper around json.loads for better error messages
-        """
+    """API JSON results parser"""
+
+    def parse_users(self, json_str: str) -> List[str]:
+        """Returns a list of userIDs from JSON data"""
         try:
-            feed_json = json.loads(json_string)
-            return self._parse_json(feed_json)
+            users_dict = json.loads(json_str)
+            return list(users_dict.keys())
         except ValueError:
-            msg = "Could not parse given JSON: %s" % json_string
+            msg = 'Could not parse the JSON user list: %s' % json_str
             raise ValueError(msg)
 
-    def _parse_json(self, feed_json: Any) -> List[Feed]:
-        feed_json = feed_json['feeds']
-        return [Feed(info['id'], info['userId']) for info in feed_json]
+    def parse_feeds(self, json_str: str, userID: str = None) -> List[Feed]:
+        """Returns a list of feeds from JSON data"""
+        try:
+            feeds_json = json.loads(json_str)
+            return self._parse_feeds_json(feeds_json, userID)
+        except ValueError:
+            msg = 'Could not parse given JSON: %s' % json_str
+            raise ValueError(msg)
+
+    def _parse_feeds_json(self, feeds: dict, userID: str) -> List[Feed]:
+        feeds = feeds['feeds']
+        return [Feed(info['id'], info['userId']) for info in feeds]

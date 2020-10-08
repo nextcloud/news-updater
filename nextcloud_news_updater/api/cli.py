@@ -13,6 +13,8 @@ class Cli:
 
 
 class CliApi(Api):
+    """Cli API for Nextcloud News up to v14 (API version 1.2)"""
+
     def __init__(self, config: Config) -> None:
         directory = config.url
         phpini = config.phpini
@@ -31,12 +33,11 @@ class CliApi(Api):
 
 
 class CliApiV2(CliApi):
-    def __init__(self, config: Config) -> None:
-        super().__init__(config)
+    """Cli API for Nextcloud News up to v14 (API version 2)"""
 
-    def _parse_json(self, feed_json: Any) -> List[Feed]:
-        feed_json = feed_json['updater']
-        return [Feed(info['feedId'], info['userId']) for info in feed_json]
+    def _parse_feeds_json(self, feeds: dict, userID: str) -> List[Feed]:
+        feeds = feeds['updater']
+        return [Feed(info['feedId'], info['userId']) for info in feeds]
 
 
 def create_cli_api(config: Config) -> CliApi:
@@ -81,7 +82,7 @@ class CliUpdater(Updater):
         self.logger.info('Running get all feeds command: %s' %
                          ' '.join(self.api.all_feeds_command))
         self.logger.info('Received these feeds to update: %s' % feeds_json)
-        return self.api.parse_feed(feeds_json)
+        return self.api.parse_feeds(feeds_json)
 
     def after_update(self) -> None:
         self.logger.info('Running after update command: %s' %
