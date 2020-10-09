@@ -74,7 +74,7 @@ class ConfigValidator:
             result += ['Unknown mode: %s' % config.mode]
         if config.loglevel not in ['info', 'error']:
             result += ['Unknown loglevel: %s' % config.loglevel]
-        if config.apilevel not in ['v1-2', 'v2']:
+        if config.apilevel not in ['v1-2', 'v2', 'v15']:
             result += ['Unknown apilevel: %s' % config.apilevel]
 
         if config.phpini and not os.path.isabs(config.phpini):

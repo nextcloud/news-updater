@@ -1,6 +1,6 @@
 import sys
 
-from nextcloud_news_updater.api.cli import CliUpdater, CliApi, \
+from nextcloud_news_updater.api.cli import CliUpdater, CliUpdaterV15, CliApi, \
     create_cli_api
 from nextcloud_news_updater.api.updater import Updater
 from nextcloud_news_updater.api.web import create_web_api, WebApi, \
@@ -23,6 +23,8 @@ class Container(BaseContainer):
     def _create_updater(self, container: BaseContainer) -> Updater:
         if container.resolve(Config).is_web():
             return container.resolve(WebUpdater)
+        elif container.resolve(Config).apilevel == 'v15':
+            return container.resolve(CliUpdaterV15)
         else:
             return container.resolve(CliUpdater)
 
