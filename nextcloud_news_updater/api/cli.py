@@ -13,30 +13,48 @@ class Cli:
 
 
 class CliApi(Api):
+    """Cli API for Nextcloud News up to v14 (API version 1.2)"""
+
     def __init__(self, config: Config) -> None:
         directory = config.url
         phpini = config.phpini
         if not directory.endswith('/'):
             directory += '/'
         self.directory = directory
-        base_command = [config.php, '-f', self.directory + 'occ']
+        self.base_command = [config.php, '-f', self.directory + 'occ']
         if phpini is not None and phpini.strip() != '':
-            base_command += ['-c', phpini]
-        self.before_cleanup_command = base_command + [
+            self.base_command += ['-c', phpini]
+        self.before_cleanup_command = self.base_command + [
             'news:updater:before-update']
-        self.all_feeds_command = base_command + ['news:updater:all-feeds']
-        self.update_feed_command = base_command + ['news:updater:update-feed']
-        self.after_cleanup_command = base_command + [
+        self.all_feeds_command = self.base_command + [
+            'news:updater:all-feeds']
+        self.update_feed_command = self.base_command + [
+            'news:updater:update-feed']
+        self.after_cleanup_command = self.base_command + [
             'news:updater:after-update']
 
 
 class CliApiV2(CliApi):
+    """Cli API for Nextcloud News up to v14 (API version 2)"""
+
+    def _parse_feeds_json(self, feeds: dict, userID: str) -> List[Feed]:
+        feeds = feeds['updater']
+        return [Feed(info['feedId'], info['userId']) for info in feeds]
+
+
+class CliApiV15(CliApi):
+    """Cli API for Nextcloud News v15+"""
+
     def __init__(self, config: Config) -> None:
         super().__init__(config)
+        self.all_feeds_command = self.base_command + ['news:feed:list']
+        self.users_list_command = self.base_command + ['user:list', '--output',
+                                                       'json']
 
-    def _parse_json(self, feed_json: Any) -> List[Feed]:
-        feed_json = feed_json['updater']
-        return [Feed(info['feedId'], info['userId']) for info in feed_json]
+    def _parse_feeds_json(self, feeds_json: Any, userID: str) -> List[Feed]:
+        if not feeds_json:
+            return []
+        return [Feed(info['id'], userID) for info in feeds_json]
 
 
 def create_cli_api(config: Config) -> CliApi:
@@ -44,6 +62,8 @@ def create_cli_api(config: Config) -> CliApi:
         return CliApi(config)
     if config.apilevel == 'v2':
         return CliApiV2(config)
+    if config.apilevel == 'v15':
+        return CliApiV15(config)
 
 
 class CliUpdateThread(UpdateThread):
@@ -56,6 +76,16 @@ class CliUpdateThread(UpdateThread):
     def update_feed(self, feed: Feed) -> None:
         command = self.api.update_feed_command + [str(feed.feed_id),
                                                   feed.user_id]
+        self.logger.info('Running update command: %s' % ' '.join(command))
+        self.cli.run(command)
+
+
+class CliUpdateThreadV15(CliUpdateThread):
+    """Cli Updater for Nextcloud News v15+"""
+
+    def update_feed(self, feed: Feed) -> None:
+        command = self.api.update_feed_command + [feed.user_id,
+                                                  str(feed.feed_id)]
         self.logger.info('Running update command: %s' % ' '.join(command))
         self.cli.run(command)
 
@@ -81,9 +111,36 @@ class CliUpdater(Updater):
         self.logger.info('Running get all feeds command: %s' %
                          ' '.join(self.api.all_feeds_command))
         self.logger.info('Received these feeds to update: %s' % feeds_json)
-        return self.api.parse_feed(feeds_json)
+        return self.api.parse_feeds(feeds_json)
 
     def after_update(self) -> None:
         self.logger.info('Running after update command: %s' %
                          ' '.join(self.api.after_cleanup_command))
         self.cli.run(self.api.after_cleanup_command)
+
+
+class CliUpdaterV15(CliUpdater):
+    """Cli Updater for Nextcloud News v15+"""
+
+    def start_update_thread(self, feeds: List[Feed]) -> CliUpdateThread:
+        return CliUpdateThreadV15(feeds, self.logger, self.api, self.cli)
+
+    def all_feeds(self) -> List[Feed]:
+        self.logger.info('Running get user list command: %s' %
+                         ' '.join(self.api.users_list_command))
+        users_json = self.cli.run(self.api.users_list_command).strip()
+        users_json = str(users_json, 'utf-8')
+        users = self.api.parse_users(users_json)
+
+        feeds_list = []
+        for userID in users:
+            self.logger.info('Running get feeds for user "%s" command: %s' %
+                             (userID, ' '.join(self.api.all_feeds_command)))
+            cmd = self.api.all_feeds_command + [userID]
+            feeds_json_bytes = self.cli.run(cmd).strip()
+            feeds_json = str(feeds_json_bytes, 'utf-8')
+            self.logger.info('Received these feeds to update for user %s: %s' %
+                             (userID, feeds_json))
+            feeds_list += self.api.parse_feeds(feeds_json, userID)
+
+        return feeds_list
