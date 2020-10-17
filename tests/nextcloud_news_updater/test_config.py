@@ -45,7 +45,7 @@ class TestConfig(TestCase):
         self.assertEqual(config.loglevel, 'error')
         self.assertEqual(config.interval, 15 * 60)
         self.assertEqual(config.timeout, 5 * 60)
-        self.assertEqual(config.apilevel, 'v1-2')
+        self.assertEqual(config.apilevel, 'v15')
         self.assertEqual(config.threads, 10)
         self.assertEqual(config.mode, 'endless')
         self.assertEqual(config.user, None)

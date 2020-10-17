@@ -23,8 +23,8 @@ class ArgumentParser:
                                       'interval.',
                                  type=int)
         self.parser.add_argument('--apilevel', '-a',
-                                 help='API level. Use v15 for News 15 or later,'
-                                      ' or v1-2 for releases prior to that',
+                                 help='API level. Use v15 for News 15 or later'
+                                      ', or v1-2 for releases prior to that',
                                  choices=['v1-2', 'v2', 'v15'])
         self.parser.add_argument('--loglevel', '-l',
                                  help='Log granularity, info will log all '
