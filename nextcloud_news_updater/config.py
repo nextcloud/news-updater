@@ -43,7 +43,7 @@ class Config:
         self.loglevel = 'error'
         self.interval = 15 * 60
         self.timeout = 5 * 60
-        self.apilevel = 'v1-2'
+        self.apilevel = 'v15'
         self.threads = 10
         self.mode = 'endless'
         self.php = 'php'

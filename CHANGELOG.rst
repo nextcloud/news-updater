@@ -3,6 +3,11 @@
 Changelog
 ---------
 
+11.0.0
+++++++
+
+- Support News v15 Terminal API
+
 10.0.1
 +++++
 

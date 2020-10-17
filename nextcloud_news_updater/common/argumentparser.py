@@ -23,9 +23,9 @@ class ArgumentParser:
                                       'interval.',
                                  type=int)
         self.parser.add_argument('--apilevel', '-a',
-                                 help='API level. Use v1-2, v2 is currently '
-                                      'only a draft',
-                                 choices=['v1-2', 'v2'])
+                                 help='API level. Use v15 for News 15 or later,'
+                                      ' or v1-2 for releases prior to that',
+                                 choices=['v1-2', 'v2', 'v15'])
         self.parser.add_argument('--loglevel', '-l',
                                  help='Log granularity, info will log all '
                                       'urls and received data, error will '

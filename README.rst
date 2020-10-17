@@ -115,8 +115,8 @@ You can view all options by running::
 
 ::
 
-    usage: nextcloud-news-updater [-h] [--threads THREADS] [--timeout TIMEOUT]
-                       [--interval INTERVAL] [--apilevel {v1-2,v2}]
+    usage: __main__.py [-h] [--threads THREADS] [--timeout TIMEOUT]
+                       [--interval INTERVAL] [--apilevel {v1-2,v2,v15}]
                        [--loglevel {info,error}] [--config CONFIG]
                        [--phpini PHPINI] [--user USER] [--password PASSWORD]
                        [--version] [--mode {endless,singlerun}] [--php PHP]
@@ -142,8 +142,9 @@ You can view all options by running::
                             Update interval between fetching the next round of
                             updates in seconds, defaults to 15 minutes. The update
                             timespan will be subtracted from the interval.
-      --apilevel {v1-2,v2}, -a {v1-2,v2}
-                            API level. Use v1-2, v2 is currently a draft only
+      --apilevel {v1-2,v2,v15}, -a {v1-2,v2,v15}
+                            API level. Use v15 for News 15 or later, or v1-2 for
+                            releases prior to that
       --loglevel {info,error}, -l {info,error}
                             Log granularity, info will log all urls and received
                             data, error will only log errors
@@ -168,7 +169,6 @@ You can view all options by running::
                             executes the update once
       --php PHP             Path to the PHP binary, e.g. /usr/bin/php7.0, defaults
                             to php
-
 
 
 
