@@ -188,7 +188,7 @@ You can also put your settings in a config file, looking like this:
     url = /path/to/nextcloud
     phpini = /path/to/custom/php.ini
     # or v2 which is currently a draft
-    apilevel = v1-2
+    apilevel = v15
     mode = endless
     # path to php binary
     php = /usr/bin/php7.0
