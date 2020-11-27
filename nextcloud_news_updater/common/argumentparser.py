@@ -34,8 +34,8 @@ class ArgumentParser:
         self.parser.add_argument('--config', '-c',
                                  help='Path to config file where all '
                                       'parameters except can be defined as '
-                                      'key values pair. An example is in '
-                                      'bin/example_config.ini')
+                                      'key values pair.  See the ' 
+                                      'README.rst for more information')
         self.parser.add_argument('--phpini', '-P',
                                  help='Custom absolute path to the php.ini '
                                       'file to use for the command line '
