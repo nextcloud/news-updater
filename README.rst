@@ -150,8 +150,8 @@ You can view all options by running::
                             data, error will only log errors
       --config CONFIG, -c CONFIG
                             Path to config file where all parameters except can be
-                            defined as key values pair. An example is in
-                            bin/example_config.ini
+                            defined as key values pair. See the README.rst for 
+                            more information
       --phpini PHPINI, -P PHPINI
                             Custom absolute path to the php.ini file to use for
                             the command line updater. If omitted, the default one
