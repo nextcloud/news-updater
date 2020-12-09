@@ -21,7 +21,9 @@ setup(
     author='Bernhard Posselt',
     author_email='dev@bernhard-posselt.com',
     url='https://github.com/nextcloud/news-updater',
-    packages=find_packages(),
+    packages=find_packages(
+        exclude=['tests', 'tests.*'],
+    ),
     include_package_data=True,
     license='GPL',
     keywords=['nextcloud', 'news', 'updater', 'RSS', 'Atom', 'feed', 'reader'],
