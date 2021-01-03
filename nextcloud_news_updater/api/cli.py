@@ -1,4 +1,4 @@
-from subprocess import check_output
+from subprocess import check_output, CalledProcessError, STDOUT
 from typing import List, Any
 
 from nextcloud_news_updater.api.api import Api, Feed
@@ -9,7 +9,7 @@ from nextcloud_news_updater.config import Config
 
 class Cli:
     def run(self, commands: List[str]) -> bytes:
-        return check_output(commands)
+        return check_output(commands, stderr=STDOUT)
 
 
 class CliApi(Api):
@@ -73,12 +73,20 @@ class CliUpdateThread(UpdateThread):
         self.cli = cli
         self.api = api
 
+    def run_command(self, command: List[str]) -> None:
+        self.logger.info('Running update command: %s' % ' '.join(command))
+        try:
+            self.cli.run(command)
+        except CalledProcessError as e:
+            self.logger.error("Command '%s' returned %d with output: '%s'" %
+                              (' '. join(command),
+                               e.returncode,
+                               e.output.decode().strip()))
+
     def update_feed(self, feed: Feed) -> None:
         command = self.api.update_feed_command + [str(feed.feed_id),
                                                   feed.user_id]
-        self.logger.info('Running update command: %s' % ' '.join(command))
-        self.cli.run(command)
-
+        self.run_command(command)
 
 class CliUpdateThreadV15(CliUpdateThread):
     """Cli Updater for Nextcloud News v15+"""
@@ -86,9 +94,7 @@ class CliUpdateThreadV15(CliUpdateThread):
     def update_feed(self, feed: Feed) -> None:
         command = self.api.update_feed_command + [feed.user_id,
                                                   str(feed.feed_id)]
-        self.logger.info('Running update command: %s' % ' '.join(command))
-        self.cli.run(command)
-
+        self.run_command(command)
 
 class CliUpdater(Updater):
     def __init__(self, config: Config, logger: Logger, api: CliApi,
