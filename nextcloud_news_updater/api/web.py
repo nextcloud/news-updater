@@ -41,11 +41,32 @@ class WebApiV2(WebApi):
         return [Feed(info['feedId'], info['userId']) for info in feeds]
 
 
+class WebApiV15(WebApi):
+    """REST API for Nextcloud News v15+"""
+
+    def __init__(self, config: Config) -> None:
+        super().__init__(config)
+        base_url = self._generify_base_url(config.url)
+        self.base_url = '%sindex.php/apps/news/api/v1-2' % base_url
+        self.before_cleanup_url = '%s/cleanup/before-update' % self.base_url
+        self.after_cleanup_url = '%s/cleanup/after-update' % self.base_url
+        self.all_feeds_url = '%s/feeds/all' % self.base_url
+        self.update_url = '%s/feeds/update' % self.base_url
+
+    def _parse_feeds_json(self, feeds_json: Any, userID: str) -> List[Feed]:
+        if not feeds_json:
+            return []
+        feeds_json = feeds_json['feeds']
+        return [Feed(info['id'], info['userId']) for info in feeds_json]
+
+
 def create_web_api(config: Config) -> WebApi:
     if config.apilevel == 'v1-2':
         return WebApi(config)
     if config.apilevel == 'v2':
         return WebApiV2(config)
+    if config.apilevel == 'v15':
+        return WebApiV15(config)
 
 
 class HttpClient:
