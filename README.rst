@@ -61,11 +61,11 @@ documentation <http://python-packaging-user-guide.readthedocs.org/en/latest/inst
 
 After installing pip, run::
 
-    sudo pip3 install nextcloud_news_updater --install-option="--install-scripts=/usr/bin"
+    sudo pip3 install nextcloud_news_updater
 
 To update the library, run::
 
-    sudo pip3 install --upgrade nextcloud_news_updater --install-option="--install-scripts=/usr/bin"
+    sudo pip3 install --upgrade nextcloud_news_updater
 
 To uninstall the library run::
 
@@ -318,7 +318,7 @@ For example Python 3.5: https://www.softwarecollections.org/en/scls/rhscl/rh-pyt
     $ scl enable rh-python35 bash
 
     # 4. Install nextcloud-news.updater
-    $ sudo pip3 install nextcloud_news_updater --install-option="--install-scripts=/usr/bin"
+    $ sudo pip3 install nextcloud_news_updater
 
 After the install you can run the updater as a service by extending the service file with the correct environment variable for your Python version. In this example we use Python 3.5:
 
