@@ -250,6 +250,35 @@ varies from distribution to distribution, e.g in Debian and Ubuntu you would use
 If you are using the REST API, most of the time you can get away by using **nobody** as
 user, but again, that might vary depending on your distribution.
 
+Running The Updater As OpenRC Service
+--------------------------------------
+On Alpine/postmarketOS/Gentoo/Artix or the other OpenRC based distros, you can create a simple text file at
+**/etc/init.d/nextcloud-news-updater** with the following contents:
+
+.. code:: sh
+    
+    #!/sbin/openrc-run
+
+    description="Nextcloud News Updater Daemon"
+
+    pidfile=${pidfile:-/run/nextcloud-news-updater.pid}
+    output_log="/var/log/nextcloud-news-updater/output.log"
+    error_log="/var/log/nextcloud-news-updater/error.log"
+
+    command=${command:-/usr/bin/nextcloud-news-updater}
+    command_user=${command_user:-www-data:www-data}
+    command_args="-c /etc/nextcloud/news/updater.ini"
+    command_background=true
+
+Then to enable and start it run::
+
+    sudo -u www-data mkdir /var/log/nextcloud-news-updater
+    sudo -u www-data touch /var/log/nextcloud-news-updater/output.log \
+                           /var/log/nextcloud-news-updater/error.log
+    sudo chmod 755 /etc/init.d/nextcloud-news-updater
+    sudo rc-update add nextcloud-news-updater
+    sudo rc-service nextcloud-news-updater start
+
 Troubleshooting
 ----------------
 If you are having trouble debugging updater errors, try running it again using the **info** loglevel::
