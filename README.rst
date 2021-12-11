@@ -177,21 +177,27 @@ You can also put your settings in a config file, looking like this:
 .. code:: ini
 
     [updater]
-    # only needed when using the REST API
-    user = admin
-    # only needed when using the REST API
-    password = admin
     threads = 10
     interval = 900
     loglevel = error
     # or https://domain.com/nextcloud when using the REST API
     url = /path/to/nextcloud
-    phpini = /path/to/custom/php.ini
     # or v2 which is currently a draft
     apilevel = v15
     mode = endless
+    
+    # The following lines are only needed when using the REST API
+    user = admin
+    password = admin
+
+    # The following lines are only needed when using the console API 
     # path to php binary
     php = /usr/bin/php7.0
+    phpini = /path/to/custom/php.ini
+
+**Warning**: If you use REST API with user and password assigned in the config file, you probably don't want anyone else but the file owner to see your user/password in the file. Secure it with::
+
+    chmod 600 /path/to/config
 
 **Note**: You can omit options in the config file if you want to use the defaults, but you can not have more than the allowed parameters present, otherwise an exception will abort the updater.
 
