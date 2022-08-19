@@ -267,20 +267,33 @@ On Alpine/postmarketOS/Gentoo/Artix or the other OpenRC based distros, you can c
 
     description="Nextcloud News Updater Daemon"
 
-    pidfile=${pidfile:-/run/nextcloud-news-updater.pid}
-    output_log="/var/log/nextcloud-news-updater/output.log"
-    error_log="/var/log/nextcloud-news-updater/error.log"
+    log_dir="/var/log/$RC_SVCNAME"
+    pidfile=${pidfile:-/run/$RC_SVCNAME.pid}
+    output_log="${output_log:-$log_dir/output.log}"
+    error_log="${error_log:-$log_dir/error.log}"
+
+    config_dir="/etc/$RC_SVCNAME"
+    config_file="$config_dir/updater.ini"
 
     command=${command:-/usr/bin/nextcloud-news-updater}
-    command_user=${command_user:-www-data:www-data}
-    command_args="-c /etc/nextcloud/news/updater.ini"
+    command_user=${command_user:-nextcloud:nextcloud}
+    command_args="-c $config_file"
     command_background=true
+
+    depend() {
+            need net
+            use mariadb postgresql
+    }
+
+    start_pre() {
+    	checkpath --directory --owner $command_user "$log_dir"
+    	checkpath --file --owner $command_user "$output_log" "$error_log"
+    	checkpath --directory "$config_dir"
+    	checkpath --file --mode 0600 --owner $command_user "$config_file"
+    }
 
 Then to enable and start it run::
 
-    sudo -u www-data mkdir /var/log/nextcloud-news-updater
-    sudo -u www-data touch /var/log/nextcloud-news-updater/output.log \
-                           /var/log/nextcloud-news-updater/error.log
     sudo chmod 755 /etc/init.d/nextcloud-news-updater
     sudo rc-update add nextcloud-news-updater
     sudo rc-service nextcloud-news-updater start
