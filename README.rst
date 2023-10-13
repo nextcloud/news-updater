@@ -33,13 +33,9 @@ Pre-Installation
 
 To run the updates via an external threaded script the cron updater has to be
 disabled. To do that go to the admin section an uncheck the **Use Nextcloud
-cron** checkbox or open **nextcloud/data/news/config/config.ini** and set::
+cron** checkbox or set this config via command line::
 
-    useCronUpdates = true
-
-to::
-
-    useCronUpdates = false
+    occ config:app:set news useCronUpdates --value=false
 
 Installation
 ------------
